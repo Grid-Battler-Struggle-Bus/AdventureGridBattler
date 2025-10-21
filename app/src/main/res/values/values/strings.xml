@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GridBattlerGame</string>
+    <string name="app_name">app_name</string>
     <string name="test1">Tile</string>
     <string name="test2">Selected</string>
     <string name="test3">Open</string>
