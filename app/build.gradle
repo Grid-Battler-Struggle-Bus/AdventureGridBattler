@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.zybooks.gridbattlergame'
+    namespace 'com.zybooks.test1'
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.zybooks.gridbattlergame"
+        applicationId "com.zybooks.test1"
         minSdk 24
         targetSdk 36
         versionCode 1

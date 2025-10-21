@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GridBattlerGame"
+rootProject.name = "Test1"
 include ':app'
