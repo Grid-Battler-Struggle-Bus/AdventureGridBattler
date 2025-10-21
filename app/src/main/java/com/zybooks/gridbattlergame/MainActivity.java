@@ -1,24 +1,83 @@
 package com.zybooks.gridbattlergame;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    private BattleGrid mBattleGrid;
+    private GridLayout mButtonGrid;
+    private GridLayout mSpriteGrid;
+    private Button mContinueButton;
+    //private int selectedSquare = -1;
+    private Characters char1;
+    private String phase;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        mButtonGrid = findViewById(R.id.button_grid);
+        mSpriteGrid = findViewById(R.id.sprite_grid);
+        mContinueButton = findViewById(R.id.continue_button);
+        mBattleGrid = new BattleGrid();
+        phase = "deploySquad";
+        for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+            Button gridButton = (Button) mButtonGrid.getChildAt(i);
+            gridButton.setOnClickListener(this::onGridButtonClick);
+        }
+        mContinueButton.setOnClickListener(this::onContinueButtonClick);
+
     }
+
+    private void onContinueButtonClick(View view) {
+        switch (phase) {
+            case "deploySquad":
+                if (mBattleGrid.deploymentCount <= 1) {
+                    if (mBattleGrid.PCs[mBattleGrid.deploymentCount].deployed) {
+                        mBattleGrid.deploymentCount++;
+                    }
+                } else {
+                    phase = "movement";
+                }
+                break;
+        }
+    }
+
+    private void onGridButtonClick(View view) {
+        int buttonIndex = mButtonGrid.indexOfChild(view);
+        switch (phase){
+            case "deploySquad":
+                if (mBattleGrid.getContent(buttonIndex) == "empty") {
+                    mBattleGrid.deployCharacter(buttonIndex);
+                    updateSprites();
+                }
+                break;
+            case "movement":
+                mBattleGrid.manageMovement(buttonIndex);
+                updateSprites();
+                break;
+        }
+    }
+
+    private void updateSprites() {
+        for (int i = 0; i < mSpriteGrid.getChildCount(); i++) {
+            TextView gridSprite = (TextView) mSpriteGrid.getChildAt(i);
+            if (mBattleGrid.getContent(i) == "empty"){
+                gridSprite.setText("");
+            } else {
+                gridSprite.setText(mBattleGrid.getContent(i));
+            }
+        }
+    }
+
 }
