@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Test1" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.Test1" parent="Base.Theme.Test1" />
+
+    <style name="grid_button">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="grid_sprite">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="friend_grid">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:src">@drawable/board_background_friend</item>
+    </style>
+    <style name="foe_grid">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:src">@drawable/board_background_foe</item>
+    </style>
+</resources>
