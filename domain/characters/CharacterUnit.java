@@ -7,7 +7,7 @@ public final class CharacterUnit {
     public final Stats unitStats;
     private Ability equippedAbility;
     private int currentHp;
-    public  int location[];
+    public  int location;
     public boolean deployed;
 
     public CharacterUnit(String charname, CharacterClass unitClass) {
@@ -16,13 +16,18 @@ public final class CharacterUnit {
         this.unitStats = ClassFactory.statsFor(unitClass);
         this.currentHp = unitStats.maxHp;
         this.equippedAbility = ClassFactory.defaultAbility(unitClass);
-        this.location = new int[2];
+        this.location = -1;
         this.deployed = false;
     }
 
     //Apply Damage
     public static void applyDamage(int damage) {
         currentHp = Math.max(0, (currentHp-damage));
+    }
+    //Apply Explosive Damage
+    public static void applyExplosiveDamage(int damage, CharacterUnit defender){
+        int defLocation = defender.location;
+
     }
     //Apply Heal
     public static void applyHeal(int healAmount) {

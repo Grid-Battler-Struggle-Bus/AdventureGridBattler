@@ -15,6 +15,11 @@ public final class BattleService() {
         int dmg = BattleCalculator.backstabDamage(attacker, defender);
         defender.applyDamage(dmg);
     }
+    //Perform Explosive Damage
+    public static void dealExplosiveDamage(CharacterUnit attacker, CharacterUnit defender) {
+        int dmg = BattleCalculator.basicDamage(attacker, defender);
+        defender.applyExplosiveDamage(dmg, defender);
+    }
     //Perform Heal
     public static void healUnit(CharacterUnit target) {
         target.applyHeal(BattleCalculator.heal());

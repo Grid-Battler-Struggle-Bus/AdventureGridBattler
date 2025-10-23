@@ -9,6 +9,7 @@ public final class ClassFactory {
             case RANGER: return new Stats(28, 8, 3, 2);
             case ROGUE: return new Stats(24, 10, 3, 2);
             case CLERIC: return new Stats(36, 0, 5, 1);
+            case GOBLIN: return new Stats(18, 5, 3, 1);
             //If Non-existent class is entered, throw an error
             default: throw new IllegalArgumentException("Unknown Class Entered: " + c);
         }
@@ -21,6 +22,7 @@ public final class ClassFactory {
             case RANGER: return new Ability("Bow Shot", AbilityType.RANGED, 2, 3);
             case ROGUE: return new Ability("Backstab", AbilityType.MELEE, 1, 1);
             case CLERIC: return new Ability("Heal", AbilityType.MAGIC, 1, 2);
+            case GOBLIN: return new Ability("GoblinTime", AbilityType.EXPLOSIVE, 1, 1);
             //If Non-existent class is entered, throw an error
             default: throw new IllegalArgumentException("Unknown Class Entered: " + c);
         }
