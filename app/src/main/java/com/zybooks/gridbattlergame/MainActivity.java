@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -50,6 +51,33 @@ public class MainActivity extends AppCompatActivity {
                     phase = "movement";
                 }
                 break;
+            case "movement":
+                if (){
+
+                }
+                else{
+                    phase = "attack";
+                    break;
+                }
+            case "attack":
+                if() {
+
+                }
+                else {
+                    phase = "end";
+                    break;
+                }
+            case "end":
+                if (currTurn = friendly){
+                    currTurn = enemy;
+                    Toast.makeText(this,R.string.enemyTurn,Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    currTurn = friendly;
+                    Toast.makeText(this,R.string.playerTurn,Toast.LENGTH_SHORT).show();
+                }
+                phase = "movement";
+                break;
         }
     }
 
@@ -66,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
                 mBattleGrid.manageMovement(buttonIndex);
                 updateSprites();
                 break;
+            case "attack":
+                mBattleGrid.damagecalulator();
+
         }
     }
 
