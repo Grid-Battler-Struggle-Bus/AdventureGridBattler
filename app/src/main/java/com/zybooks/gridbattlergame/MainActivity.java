@@ -15,11 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mButtonGrid;
     private GridLayout mSpriteGrid;
     private Button mContinueButton;
-    //private int selectedSquare = -1;
-    private Characters char1;
     private String phase;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
