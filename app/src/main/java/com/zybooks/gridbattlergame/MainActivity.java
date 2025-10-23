@@ -17,8 +17,6 @@ public class MainActivity extends AppCompatActivity {
     private Button mContinueButton;
     private String phase;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

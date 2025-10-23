@@ -94,20 +94,14 @@ public class BattleGrid {
         int vertDisplacement;
         int horDisplacement;
         int totalDisplacement;
-        Log.d("TAG", "Index: " + index);
         for (int i = 0; i <= radius * 2; i++){
             for (int j = 0; j <= radius * 2; j++){
                 vertDisplacement = i - radius;
-                Log.d("TAG", "Vertical Displacement: " + vertDisplacement);
                 horDisplacement = j - radius;
-                Log.d("TAG", "Horizontal Displacement: " + horDisplacement);
                 totalDisplacement = Math.abs(vertDisplacement) + Math.abs(horDisplacement);
                 if(totalDisplacement <= radius && totalDisplacement != 0){
-                    Log.d("TAG", "Within Radius: " + vertDisplacement + ", " + horDisplacement);
                     if(0 <= row + vertDisplacement && row + vertDisplacement < GRID_HEIGHT) {
-                        Log.d("TAG", "Vertical check: " + (row + vertDisplacement));
                         if(0 <= col + horDisplacement && col + horDisplacement < GRID_WIDTH){
-                            Log.d("TAG", "Horizontal check: " + (col + horDisplacement));
                             radiusTilesList.add(index + (vertDisplacement * GRID_WIDTH) + (horDisplacement));
                         }
                     }
