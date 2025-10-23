@@ -1,7 +1,6 @@
 package com.zybooks.gridbattlergame;
 
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +86,112 @@ public class BattleGrid {
         return adjacentTiles;
     }
 
+    //Return integer array of all tiles in a radius
+    public int[] getRadius(int index, int radius){
+        List<Integer> radiusTilesList = new ArrayList<>();
+        int row = index / GRID_WIDTH;
+        int col = index % GRID_WIDTH;
+        int vertDisplacement;
+        int horDisplacement;
+        int totalDisplacement;
+        for (int i = 0; i <= radius * 2; i++){
+            for (int j = 0; j <= radius * 2; j++){
+                vertDisplacement = i - radius;
+                horDisplacement = j - radius;
+                totalDisplacement = Math.abs(vertDisplacement) + Math.abs(horDisplacement);
+                if(totalDisplacement <= radius && totalDisplacement != 0){
+                    if(0 <= row + vertDisplacement && row + vertDisplacement < GRID_HEIGHT) {
+                        if(0 <= col + horDisplacement && col + horDisplacement < GRID_WIDTH){
+                            radiusTilesList.add(index + (vertDisplacement * GRID_WIDTH) + (horDisplacement));
+                        }
+                    }
+                }
+            }
+        }
+        int[] radiusTiles = new int[radiusTilesList.size()];
+        for(int i = 0; i < radiusTiles.length; i++){
+            radiusTiles[i] = radiusTilesList.get(i);
+        }
+        return radiusTiles;
+    }
+
+    //Return integer array of all tiles in a radius with specified keyword
+    public int[] getSpecialRadius(int index, int radius, String keyword){
+        int[] radiusTilesTemp = getRadius(index, radius);
+        List<Integer> radiusTilesList = new ArrayList<>();
+        for(int i = 0; i < radiusTilesTemp.length; i++){
+            if(getContent(radiusTilesTemp[i]).contains(keyword)){
+                radiusTilesList.add(radiusTilesTemp[i]);
+            }
+        }
+        int[] radiusTiles = new int[radiusTilesList.size()];
+        for(int i = 0; i < radiusTiles.length; i++){
+            radiusTiles[i] = radiusTilesList.get(i);
+        }
+        return radiusTiles;
+    }
+
+    //Return integer array of all tiles in a line facing a cardinal direction
+    public int[] getLine(int index, int range, char direction){
+        List<Integer> lineTilesList = new ArrayList<>();
+        switch(direction) {
+            case('N'):
+                for(int i = 1; i <= range; i++){
+                    int row = index / GRID_WIDTH;
+                    if(row - i >= 0){
+                        lineTilesList.add(index - (i * GRID_WIDTH));
+                    }
+                }
+                break;
+            case('E'):
+                for(int i = 1; i <= range; i++){
+                    int col = index % GRID_WIDTH;
+                    if(col + i < GRID_WIDTH){
+                        lineTilesList.add(index + i);
+                    }
+                }
+                break;
+            case('S'):
+                for(int i = 1; i <= range; i++){
+                    int row = index / GRID_WIDTH;
+                    if(row + i < GRID_HEIGHT){
+                        lineTilesList.add(index + (i * GRID_WIDTH));
+                    }
+                }
+                break;
+            case('W'):
+                for(int i = 1; i <= range; i++){
+                    int col = index % GRID_WIDTH;
+                    if(col + i >= 0){
+                        lineTilesList.add(index - i);
+                    }
+                }
+                break;
+        }
+        int[] lineTiles = new int[lineTilesList.size()];
+        for(int i = 0; i < lineTiles.length; i++){
+            lineTiles[i] = lineTilesList.get(i);
+        }
+        return lineTiles;
+    }
+
+
+    //Return integer array of all tiles in a line facing a cardinal direction with a specified keyword
+    public int[] getSpecialLine(int index, int range, char direction, String keyword){
+        int[] lineTilesTemp = getLine(index, range, direction);
+        List<Integer> lineTilesList = new ArrayList<>();
+        for(int i = 0; i < lineTilesTemp.length; i++){
+            if(getContent(lineTilesTemp[i]).contains(keyword)){
+                lineTilesList.add(lineTilesTemp[i]);
+            }
+        }
+        int[] lineTiles = new int[lineTilesList.size()];
+        for(int i = 0; i < lineTiles.length; i++){
+            lineTiles[i] = lineTilesList.get(i);
+        }
+        return lineTiles;
+    }
+
     public void manageMovement(int index){
         if (currentTarget == -1 && getContent(index).contains("character")){
             Log.d("TAG", "manageMovement: Start Move");
@@ -111,7 +216,7 @@ public class BattleGrid {
         }
     }
 
-    //Move character to a available adjacent tile
+    //Move character to an available adjacent tile
     public void performMove(int index){
         setContent(index, getContent(currentTarget));
         int[] adjacent = getSpecialAdjacent(currentTarget, "open");
