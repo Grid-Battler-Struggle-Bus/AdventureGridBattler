@@ -1,7 +1,7 @@
 package com.zybooks.gridbattlergame;
 
 public class Characters {
-    int location[] = new int[2];
+    int location = -1;
     boolean deployed = false;
 }
 
