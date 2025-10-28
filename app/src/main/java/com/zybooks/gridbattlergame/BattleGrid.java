@@ -30,20 +30,20 @@ public class BattleGrid {
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
         battleGrid[row][col] = content;
-        return ;
     }
 
     public void deployCharacter(int index){
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
+        //remove character from previous position if deployed before
         if(PCs[deploymentCount].deployed){
-            battleGrid[PCs[deploymentCount].location[0]][PCs[deploymentCount].location[1]] = "empty";
+            battleGrid[PCs[deploymentCount].location/8][PCs[deploymentCount].location%8] = "empty";
+        //set that character has been deployed now
         } else {
             PCs[deploymentCount].deployed = true;
         }
         battleGrid[row][col] = "character" + deploymentCount;
-        PCs[deploymentCount].location[0] = row;
-        PCs[deploymentCount].location[1] = col;
+        PCs[deploymentCount].location =  (row * 8) + col;
     }
 
     //Return integer array of adjacent tiles index's
@@ -94,12 +94,15 @@ public class BattleGrid {
         int vertDisplacement;
         int horDisplacement;
         int totalDisplacement;
+        //loop through a grid the same size as diameter
         for (int i = 0; i <= radius * 2; i++){
             for (int j = 0; j <= radius * 2; j++){
                 vertDisplacement = i - radius;
                 horDisplacement = j - radius;
                 totalDisplacement = Math.abs(vertDisplacement) + Math.abs(horDisplacement);
+                //check that the tile is within the range and isn't the origin
                 if(totalDisplacement <= radius && totalDisplacement != 0){
+                    //check that tile's position relative to the index would exist on the battle grid
                     if(0 <= row + vertDisplacement && row + vertDisplacement < GRID_HEIGHT) {
                         if(0 <= col + horDisplacement && col + horDisplacement < GRID_WIDTH){
                             radiusTilesList.add(index + (vertDisplacement * GRID_WIDTH) + (horDisplacement));
@@ -193,19 +196,19 @@ public class BattleGrid {
     }
 
     public void manageMovement(int index){
+        //did player click a character and is a move already started
         if (currentTarget == -1 && getContent(index).contains("character")){
-            Log.d("TAG", "manageMovement: Start Move");
             startMovement(index);
+        //let player click on character again to cancel move
         } else if (currentTarget == index){
-            Log.d("TAG", "manageMovement: End Move");
             endMovement(index);
+        //Move character to a different square and reset board for next move
         } else if (getContent(index).contains("open")){
-            Log.d("TAG", "manageMovement: Perform Move");
             performMove(index);
         }
     }
 
-    //Display available tiles to move to
+    //Sets tiles around target as available to move
     public void startMovement(int index){
         currentTarget = index;
         int[] adjacent = getSpecialAdjacent(index, "empty");
@@ -218,7 +221,9 @@ public class BattleGrid {
 
     //Move character to an available adjacent tile
     public void performMove(int index){
-        setContent(index, getContent(currentTarget));
+        String currentChar = getContent(currentTarget);
+        setContent(index, currentChar);
+        PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
         int[] adjacent = getSpecialAdjacent(currentTarget, "open");
         for (int i = 0; i < adjacent.length; i++){
             if(adjacent[i] != -1) {
@@ -229,7 +234,7 @@ public class BattleGrid {
         currentTarget = - 1;
     }
 
-    //Cancel movement
+    //Undo start movement
     public void endMovement(int index){
         int[] adjacent = getSpecialAdjacent(index, "open");
         for (int i = 0; i < adjacent.length; i++){
