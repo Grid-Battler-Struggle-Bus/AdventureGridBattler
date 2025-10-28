@@ -1,9 +1,9 @@
-package com.example.gridbattlergame.domain.combat;
+package com.zybooks.gridbattlergame.domain.combat;
 
-import com.example.gridbattlergame.domain.characters.*;
+import com.zybooks.gridbattlergame.domain.characters.*;
 
-public final class BattleService() {
-    private BattlerService() {}
+public final class BattleService {
+    private void BattlerService() {}
 
     //Perform Basic Attack
     public static void dealBasicDamage(CharacterUnit attacker, CharacterUnit defender) {

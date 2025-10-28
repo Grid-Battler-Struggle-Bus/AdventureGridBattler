@@ -1,4 +1,4 @@
-package com.example.gridbattlergame.domain.characters;
+package com.zybooks.gridbattlergame.domain.characters;
 
 public final class ClassFactory {
     public static Stats statsFor(CharacterClass char_class) {
@@ -11,7 +11,7 @@ public final class ClassFactory {
             case CLERIC: return new Stats(36, 0, 5, 1);
             case GOBLIN: return new Stats(18, 5, 3, 1);
             //If Non-existent class is entered, throw an error
-            default: throw new IllegalArgumentException("Unknown Class Entered: " + c);
+            default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
         }
     }
     public static Ability defaultAbility(CharacterClass char_class) {
@@ -24,7 +24,7 @@ public final class ClassFactory {
             case CLERIC: return new Ability("Heal", AbilityType.MAGIC, 1, 2);
             case GOBLIN: return new Ability("GoblinTime", AbilityType.EXPLOSIVE, 1, 1);
             //If Non-existent class is entered, throw an error
-            default: throw new IllegalArgumentException("Unknown Class Entered: " + c);
+            default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
         }
     }
 }

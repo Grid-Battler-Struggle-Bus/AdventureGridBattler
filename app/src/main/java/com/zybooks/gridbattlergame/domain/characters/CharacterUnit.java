@@ -1,16 +1,16 @@
-package com.example.gridbattlergame.domain.characters;
+package com.zybooks.gridbattlergame.domain.characters;
 
 public final class CharacterUnit {
 
-    public final charName;
-    public final CharacterClass unitClass;
-    public final Stats unitStats;
+    public final String charName;
+    public static CharacterClass unitClass = null;
+    public static Stats unitStats = null;
     private Ability equippedAbility;
-    private int currentHp;
+    private static int currentHp;
     public  int location;
     public boolean deployed;
 
-    public CharacterUnit(String charname, CharacterClass unitClass) {
+    public CharacterUnit(String charName, CharacterClass unitClass) {
         this.charName = charName;
         this.unitClass = unitClass;
         this.unitStats = ClassFactory.statsFor(unitClass);
