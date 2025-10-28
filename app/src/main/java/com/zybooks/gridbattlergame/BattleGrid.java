@@ -239,6 +239,14 @@ public class BattleGrid {
         }
         currentTarget = -1;
     }
+    if (actor == friendly[index]){
+        setContent(index, getContent(currentTarget));
+        int[] adjacent = getSpecialAdjacent(currentTarget, "occupied");
+        for (int i = 0; i < adjacent.length; i++){
+            if(adjacent[i] != -1) {
+                setContent(adjacent[i], "not empty");
+            }
+        }
 
 
 

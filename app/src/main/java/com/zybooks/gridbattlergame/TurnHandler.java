@@ -1,22 +1,34 @@
 package com.zybooks.gridbattlergame;
 
-public class TurnHandler {
-    private void performAttack(){
-        if (actor == friendly){
-            if (target == enemy){
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-            }
-            else if (target == friendly) {
+public class TurnHandler {
+    public int currentTarget = -1;
+    public Characters[] target;
+    public Characters[] ally = {new Characters(), new Characters(), new Characters()};
+    public Characters[] opponent = {};
+    public Characters[] attacker = ally;
+
+    private void manageAttack(index){
+        if (attacker == ally){
+            if (currentTarget == -1 && getContent(index).contains("character")){
+                Log.d("TAG", "manageMovement: Start Move");
+                startMovement(index);
+                if (target == opponent);
+                }
+            else if (target == ally) {
 
             }
 
         }
         else {
-            if (target == enemy){
+            if (target == opponent){
 
             }
-            else if (target == friendly) {
-
+            else if (target == ally) {
+                attacker = opponent;
             }
         }
     }
