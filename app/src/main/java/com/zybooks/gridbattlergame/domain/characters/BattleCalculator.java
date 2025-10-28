@@ -1,6 +1,6 @@
-package com.example.gridbattlergame.domain.characters;
+package com.zybooks.gridbattlergame.domain.characters;
 
-public final class BattleCalculator() {
+public final class BattleCalculator {
     private BattleCalculator() {}
 
     //Deal Damage
