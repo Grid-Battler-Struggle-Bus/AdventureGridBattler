@@ -31,10 +31,16 @@ public class BattleGrid {
         int col = index % GRID_WIDTH;
         battleGrid[row][col] = content;
     }
-
+    public void deployEnemies(){
+        setContent (4, "enemy0");
+        setContent (13, "enemy1");
+        setContent (21, "enemy1");
+    }
     public void deployCharacter(int index){
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
+        //only let character deploy on friendly side
+        if (col > 3) return;
         //remove character from previous position if deployed before
         if(PCs[deploymentCount].deployed){
             battleGrid[PCs[deploymentCount].location/8][PCs[deploymentCount].location%8] = "empty";

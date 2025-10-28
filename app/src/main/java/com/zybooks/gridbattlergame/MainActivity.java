@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         mSpriteGrid = findViewById(R.id.sprite_grid);
         mContinueButton = findViewById(R.id.continue_button);
         mBattleGrid = new BattleGrid();
+        mBattleGrid.deployEnemies();
+        updateSprites();
         phase = "deploySquad";
         for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
             Button gridButton = (Button) mButtonGrid.getChildAt(i);
