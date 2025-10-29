@@ -18,7 +18,7 @@ public class BattleGrid {
     public CharacterUnit[] PCs;
     public CharacterUnit[] Enemies;
 
-    public BattleGrid(CharacterUnit[] incomingFriends, CharacterUnit[] incomingFoes ) {
+    public BattleGrid(CharacterUnit[] incomingFriends, CharacterUnit[] incomingFoes) {
         battleGrid = new String[GRID_HEIGHT][GRID_WIDTH];
         PCs = incomingFriends;
         Enemies = incomingFoes;
@@ -32,6 +32,15 @@ public class BattleGrid {
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
         return battleGrid[row][col];
+    }
+
+    public CharacterUnit getCharacter(int index) {
+        if (getContent(index).contains("character")){
+            return  PCs[Integer.parseInt(getContent(index).replaceAll("[^0-9]", ""))];
+        } else {
+            return  Enemies[Integer.parseInt(getContent(index).replaceAll("[^0-9]", ""))];
+        }
+
     }
 
     public void setContent(int index, String content){

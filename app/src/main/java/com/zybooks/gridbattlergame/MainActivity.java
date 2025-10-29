@@ -87,8 +87,10 @@ public class MainActivity extends AppCompatActivity {
             TextView gridSprite = (TextView) mSpriteGrid.getChildAt(i);
             if (mBattleGrid.getContent(i) == "empty"){
                 gridSprite.setText("");
-            } else {
-                gridSprite.setText(mBattleGrid.getContent(i));
+            } else if (mBattleGrid.getContent(i) == "open"){
+                gridSprite.setText("open");
+            } else if (mBattleGrid.getContent(i).contains("enemy") || mBattleGrid.getContent(i).contains("character")) {
+                gridSprite.setText(mBattleGrid.getCharacter(i).charName);
             }
         }
     }
@@ -101,10 +103,8 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
-                            Log.d("TAG", "onActivityResult: results extracted");
                             String char0Name = data.getStringExtra("char0Name");
                             String char0Class = data.getStringExtra("char0Class");
-                            Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
                             PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
                             String char1Name = data.getStringExtra("char1Name");
                             String char1Class = data.getStringExtra("char1Class");
