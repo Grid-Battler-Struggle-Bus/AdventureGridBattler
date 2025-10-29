@@ -18,7 +18,7 @@ public class BattleGrid {
     public CharacterUnit[] PCs;
     public CharacterUnit[] Enemies;
 
-    public BattleGrid(CharacterUnit[] incomingFriends, CharacterUnit[] incomingFoes ) {
+    public BattleGrid(CharacterUnit[] incomingFriends, CharacterUnit[] incomingFoes) {
         battleGrid = new String[GRID_HEIGHT][GRID_WIDTH];
         PCs = incomingFriends;
         Enemies = incomingFoes;

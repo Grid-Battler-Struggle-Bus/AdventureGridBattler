@@ -77,19 +77,13 @@ public class SelectionScreen extends AppCompatActivity {
 
         /// Push character class
         confirmButton.setOnClickListener(v -> {
-            Log.d("TAG", "onCreate: button clicked");
-            Log.d("TAG", "onCreate: " + selectedClasses);
             ArrayList<CharacterClass> chosenUnits = new ArrayList<>(selectedClasses);
-            Log.d("TAG", "onCreate: " + chosenUnits);
             Intent intent = new Intent();
             for (int i = 0; i < chosenUnits.size(); i++) {
-                Log.d("TAG", "onCreate: current char " + chosenUnits.get(i));
-                Log.d("TAG", "onCreate: character" + i + "added to extra" + chosenUnits.get(i).toString());
                 intent.putExtra("char"+ i +"Name", chosenUnits.get(i).toString());
                 intent.putExtra("char"+ i + "Class", chosenUnits.get(i).toString());
             }
             setResult(RESULT_OK, intent);
-            Log.d("TAG", "onCreate: response sent");
             finish();
         });
     }

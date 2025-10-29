@@ -127,8 +127,10 @@ public class MainActivity extends AppCompatActivity {
             TextView gridSprite = (TextView) mSpriteGrid.getChildAt(i);
             if (mBattleGrid.getContent(i) == "empty") {
                 gridSprite.setText("");
-            } else {
-                gridSprite.setText(mBattleGrid.getContent(i));
+            } else if (mBattleGrid.getContent(i) == "open"){
+                gridSprite.setText("open");
+            } else if (mBattleGrid.getContent(i).contains("enemy") || mBattleGrid.getContent(i).contains("character")) {
+                gridSprite.setText(mBattleGrid.getCharacter(i).charName);
             }
         }
     }
