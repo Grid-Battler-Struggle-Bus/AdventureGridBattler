@@ -1,8 +1,5 @@
 package com.zybooks.gridbattlergame;
 
-import static com.zybooks.gridbattlergame.domain.characters.AbilityType.EXPLOSIVE;
-import static com.zybooks.gridbattlergame.domain.characters.AbilityType.MAGIC;
-
 import android.util.Log;
 
 import com.zybooks.gridbattlergame.domain.characters.Ability;
@@ -37,7 +34,7 @@ public class BattleGrid {
         return battleGrid[row][col];
     }
 
-    public void setContent(int index, String content) {
+    public void setContent(int index, String content){
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
         battleGrid[row][col] = content;

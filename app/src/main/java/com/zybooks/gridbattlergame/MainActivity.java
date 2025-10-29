@@ -2,14 +2,12 @@ package com.zybooks.gridbattlergame;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -21,8 +19,6 @@ import com.zybooks.gridbattlergame.domain.characters.CharacterClass;
 import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
 import com.zybooks.gridbattlergame.domain.ui.SelectionScreen;
 
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity {
 
     private BattleGrid mBattleGrid;
@@ -32,17 +28,15 @@ public class MainActivity extends AppCompatActivity {
     private CharacterUnit[] PCs = new CharacterUnit[3];
     private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin3", CharacterClass.GOBLIN, false)};
     private String phase;
-    private int currTurn = 0;
-    private Characters[] friendly;
-    private Characters[] enemy;
-    private Characters[] actor = friendly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = new Intent(this, SelectionScreen.class);
+        intent.putExtra("PC array", PCs);
         characterSelectLauncher.launch(intent);
         setContentView(R.layout.activity_main);
+
         mButtonGrid = findViewById(R.id.button_grid);
         mSpriteGrid = findViewById(R.id.sprite_grid);
         mContinueButton = findViewById(R.id.continue_button);
@@ -55,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             gridButton.setOnClickListener(this::onGridButtonClick);
         }
         mContinueButton.setOnClickListener(this::onContinueButtonClick);
+
     }
 
     private void onContinueButtonClick(View view) {
@@ -67,24 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     phase = "movement";
                 }
-                break;
-            case "movement":
-                phase = "attack";
-                break;
-            case "attack":
-                phase = "end";
-                break;
-            case "end":
-                if (actor == friendly) {
-                    actor = enemy;
-                    Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                } else {
-                    actor = friendly;
-                    Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                }
-                phase = "movement";
                 break;
         }
     }
@@ -100,9 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "movement":
                 mBattleGrid.manageMovement(buttonIndex);
-                break;
-            case "attack":
-                mBattleGrid.manageAttack(buttonIndex); // Example method name
+                updateSprites();
                 break;
         }
     }
@@ -124,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Log.d("TAG", "onActivityResult: response recieved");
                         Intent data = result.getData();
                         if (data != null) {
                             Log.d("TAG", "onActivityResult: results extracted");
@@ -142,5 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+
         );
+
 }
