@@ -17,10 +17,10 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mSpriteGrid;
     private Button mContinueButton;
     private String phase;
-    private int currTurn;
+    private int currTurn = 0;
     private Characters[] friendly;
     private Characters[] enemy;
-    private Characters[] actor;
+    private Characters[] actor = friendly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
