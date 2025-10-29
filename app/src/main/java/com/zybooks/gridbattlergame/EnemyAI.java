@@ -1,3 +1,5 @@
+import com.zybooks.gridbattlergame.BattleGrid;
+
 public class EnemyAI {
     private BattleGrid battleGrid;
     private int enemyIndex; // The grid index where this enemy is located
@@ -136,7 +138,9 @@ public class EnemyAI {
         battleGrid.setContent(newIndex, enemyId);
         battleGrid.setContent(enemyIndex, "empty");
     }
-    
+
+    /// FIX ME: TEMPORARY ATTACK METHOD, REPLACE AFTER TURN IMPLEMENT
+
     private void attack(int targetIndex) {
         // Get which character is being attacked
         String targetContent = battleGrid.getContent(targetIndex);
