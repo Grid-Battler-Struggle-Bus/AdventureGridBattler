@@ -1,6 +1,11 @@
 package com.zybooks.gridbattlergame;
 
 import android.util.Log;
+
+import com.zybooks.gridbattlergame.domain.characters.Ability;
+import com.zybooks.gridbattlergame.domain.characters.AbilityType;
+import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +16,11 @@ public class BattleGrid {
     public int deploymentCount = 0;
     public int currentTarget = -1;
     public Characters[] PCs = {new Characters(), new Characters(), new Characters()};
+    private CharacterUnit actor;
+    private Characters[] friendly;
+    private Characters[] enemy;
+    private CharacterUnit target;
+    private AbilityType AbilityType;
 
     public BattleGrid() {
         battleGrid = new String[GRID_HEIGHT][GRID_WIDTH];
@@ -244,15 +254,67 @@ public class BattleGrid {
         }
         currentTarget = -1;
     }
-    if (actor == friendly[index]){
-        setContent(index, getContent(currentTarget));
-        int[] adjacent = getSpecialAdjacent(currentTarget, "occupied");
-        for (int i = 0; i < adjacent.length; i++){
-            if(adjacent[i] != -1) {
-                setContent(adjacent[i], "not empty");
+    public void manageAttack(int index) {
+        if (currentTarget == -1 && getContent(index).contains("character")) {
+            Log.d("TAG", "manageMovement: Start Attack");
+            startAttack(index);
+        } else if (currentTarget == index) {
+            Log.d("TAG", "manageMovement: End Attack");
+            endAttack(index);
+        } else if (getContent(index).contains("enemy")) {
+            Log.d("TAG", "manageMovement: Attack");
+            performAttack(index);
+        }
+    }
+
+    //display available enemies to attack
+    public void startAttack(int index) {
+        currentTarget = index;
+        int[] adjacent = getSpecialAdjacent(index, "enemy");
+        for (int i = 0; i < adjacent.length; i++) {
+            if (-1 != adjacent[i]) {
+                setContent(adjacent[i], "enemy");
             }
         }
 
+    }
+
+    public void endAttack(int index) {
+        int[] adjacent = getSpecialAdjacent(index, "enemy");
+        for (int i = 0; i < adjacent.length; i++) {
+            if (adjacent[i] != -1) {
+                setContent(adjacent[i], "enemy");
+            }
+        }
+        currentTarget = -1;
+    }
+
+    //perform an attack
+    public void performAttack(int index) {
+        setContent(index, getContent(currentTarget));
+        switch  (AbilityType){
+            case MELEE:
+                int[] adjacent = getSpecialAdjacent(currentTarget, "enemy");
+                for (int i = 0; i < adjacent.length; i++) {
+                    if (adjacent[i] != -1) {
+                        setContent(adjacent[i], "enemy");
+                    }
+                }
+            case RANGED:
+                int[] line = getSpecialLine(currentTarget, 2, 'E', "Enemy");
+                for (int i = 0; i < line.length; i++) {
+                    if (line[i] != -1) {
+                        setContent(line[i], "enemy");
+                    }
+            case MAGIC:
+                
+            case EXPLOSIVE:
+                }
 
 
+
+
+
+        }
+    }
 }

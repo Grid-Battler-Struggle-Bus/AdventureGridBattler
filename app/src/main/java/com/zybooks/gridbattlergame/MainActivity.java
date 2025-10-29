@@ -52,15 +52,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case "movement":
-                mBattleGrid.startMovement(index);
                 phase = "attack";
-                break; // ✅ Fixed: was outside the case block
-
+                break;
             case "attack":
-                // Add attack logic here if needed
                 phase = "end";
-                break; // ✅ Added missing break
-
+                break;
             case "end":
                 if (actor == friendly) {
                     actor = enemy;
@@ -72,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     currTurn++;
                 }
                 phase = "movement";
-                break; // ✅ Added missing break
+                break;
         }
+    }
 
     private void onGridButtonClick(View view) {
         int buttonIndex = mButtonGrid.indexOfChild(view);
@@ -86,15 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "movement":
                 mBattleGrid.manageMovement(buttonIndex);
-                updateSprites();
                 break;
-
             case "attack":
-                // ✅ Fixed: Need to complete the method call
-                mBattleGrid.performAttack(buttonIndex); // Example method name
-                mBattleGrid.damageCalculator(); // Fixed typo: damagecalulator → damageCalculator
-                updateSprites(); // ✅ Added to update UI after attack
+                mBattleGrid.manageAttack(buttonIndex); // Example method name
                 break;
+        }
+    }
 
     private void updateSprites() {
         for (int i = 0; i < mSpriteGrid.getChildCount(); i++) {
