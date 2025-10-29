@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 updateSprites();
                 break;
             case "attack":
-                performAttack(buttonIndex); // Example method name
+                manageAttack(buttonIndex); // Example method name
                 break;
         }
     }
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
     //perform an attack
     public void performAttack(int index) {
-        
+
     }
 
                 ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
