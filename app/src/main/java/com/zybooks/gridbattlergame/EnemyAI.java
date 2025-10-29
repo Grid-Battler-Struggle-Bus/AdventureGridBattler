@@ -1,3 +1,5 @@
+package com.zybooks.gridbattlergame;
+
 import com.zybooks.gridbattlergame.BattleGrid;
 
 public class EnemyAI {
@@ -50,6 +52,10 @@ public class EnemyAI {
         if (distance <= attackRange) {
             attack(nearestTargetIndex);
         }
+    }
+
+    //REMOVE AFTER TEST
+    private void attack(int nearestTargetIndex) {
     }
 
     private int findNearestTarget() {
@@ -140,23 +146,25 @@ public class EnemyAI {
     }
 
     /// FIX ME: TEMPORARY ATTACK METHOD, REPLACE AFTER TURN IMPLEMENT
+    /// fuck it, let's just gray it out so it works during testing
+//
+//    private void attack(int targetIndex) {
+//        // Get which character is being attacked
+//        String targetContent = battleGrid.getContent(targetIndex);
+//
+//        // Extract character number (e.g., "character0" -> 0)
+//        int characterNum = Integer.parseInt(targetContent.replace("character", ""));
+//
+//        // Deal damage to the character
+//        battleGrid.PCs[characterNum].health -= 10; // Adjust damage as needed
+//
+//        Log.d("EnemyAI", enemyId + " attacked " + targetContent);
+//
+//        // Check if character died
+//        if (battleGrid.PCs[characterNum].health <= 0) {
+//            battleGrid.setContent(targetIndex, "empty");
+//            Log.d("EnemyAI", targetContent + " was defeated!");
+//        }
 
-    private void attack(int targetIndex) {
-        // Get which character is being attacked
-        String targetContent = battleGrid.getContent(targetIndex);
-
-        // Extract character number (e.g., "character0" -> 0)
-        int characterNum = Integer.parseInt(targetContent.replace("character", ""));
-
-        // Deal damage to the character
-        battleGrid.PCs[characterNum].health -= 10; // Adjust damage as needed
-
-        Log.d("EnemyAI", enemyId + " attacked " + targetContent);
-
-        // Check if character died
-        if (battleGrid.PCs[characterNum].health <= 0) {
-            battleGrid.setContent(targetIndex, "empty");
-            Log.d("EnemyAI", targetContent + " was defeated!");
-        }
-    }
+    // }
 }
