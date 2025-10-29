@@ -1,14 +1,23 @@
 package com.zybooks.gridbattlergame;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.zybooks.gridbattlergame.domain.characters.CharacterClass;
+import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
+import com.zybooks.gridbattlergame.domain.ui.SelectionScreen;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,21 +25,24 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mButtonGrid;
     private GridLayout mSpriteGrid;
     private Button mContinueButton;
+    private CharacterUnit[] PCs = new CharacterUnit[3];
+    private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin3", CharacterClass.GOBLIN, false)};
     private String phase;
-    private int currTurn = 0;
-    private Characters[] friendly;
-    private Characters[] enemy;
-    private Characters[] actor = friendly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(this, SelectionScreen.class);
+        intent.putExtra("PC array", PCs);
+        characterSelectLauncher.launch(intent);
         setContentView(R.layout.activity_main);
 
         mButtonGrid = findViewById(R.id.button_grid);
         mSpriteGrid = findViewById(R.id.sprite_grid);
         mContinueButton = findViewById(R.id.continue_button);
-        mBattleGrid = new BattleGrid();
+        mBattleGrid = new BattleGrid(PCs, Enemies);
+        mBattleGrid.deployEnemies();
+        updateSprites();
         phase = "deploySquad";
         for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
             Button gridButton = (Button) mButtonGrid.getChildAt(i);
@@ -51,24 +63,6 @@ public class MainActivity extends AppCompatActivity {
                     phase = "movement";
                 }
                 break;
-            case "movement":
-                phase = "attack";
-                break;
-            case "attack":
-                phase = "end";
-                break;
-            case "end":
-                if (actor == friendly) {
-                    actor = enemy;
-                    Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                } else {
-                    actor = friendly;
-                    Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                }
-                phase = "movement";
-                break;
         }
     }
 
@@ -83,9 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "movement":
                 mBattleGrid.manageMovement(buttonIndex);
-                break;
-            case "attack":
-                mBattleGrid.manageAttack(buttonIndex); // Example method name
+                updateSprites();
                 break;
         }
     }
@@ -100,5 +92,31 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Log.d("TAG", "onActivityResult: results extracted");
+                            String char0Name = data.getStringExtra("char0Name");
+                            String char0Class = data.getStringExtra("char0Class");
+                            Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
+                            PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
+                            String char1Name = data.getStringExtra("char1Name");
+                            String char1Class = data.getStringExtra("char1Class");
+                            PCs[1] = new CharacterUnit(char1Name, CharacterClass.valueOf(char1Class), true);
+                            String char2Name = data.getStringExtra("char2Name");
+                            String char2Class = data.getStringExtra("char2Class");
+                            PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
+                        }
+                    }
+                }
+            }
+
+        );
 
 }
