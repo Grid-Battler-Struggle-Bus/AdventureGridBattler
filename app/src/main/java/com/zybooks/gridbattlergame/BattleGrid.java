@@ -10,10 +10,14 @@ public class BattleGrid {
     public String[][] battleGrid;
     public int deploymentCount = 0;
     public int currentTarget = -1;
-    public Characters[] PCs = {new Characters(), new Characters(), new Characters()};
+    public Characters[] PCs;
+    public Characters[] Enemies;
 
-    public BattleGrid() {
+    public BattleGrid(Characters[] incomingFriends, Characters[] incomingFoes ) {
         battleGrid = new String[GRID_HEIGHT][GRID_WIDTH];
+        PCs = incomingFriends;
+
+        Enemies = new Characters[]{new Characters(), new Characters(), new Characters()};
         for (int row = 0; row < GRID_HEIGHT; row++){
             for (int col = 0; col < GRID_WIDTH; col++){
                 battleGrid[row][col] = "empty";
@@ -32,8 +36,14 @@ public class BattleGrid {
         battleGrid[row][col] = content;
     }
     public void deployEnemies(){
+        Enemies[0].location = 4;
+        Enemies[0].deployed = true;
         setContent (4, "enemy0");
+        Enemies[1].location = 13;
+        Enemies[1].deployed = true;
         setContent (13, "enemy1");
+        Enemies[2].location = 21;
+        Enemies[2].deployed = true;
         setContent (21, "enemy1");
     }
     public void deployCharacter(int index){

@@ -1,12 +1,19 @@
 package com.zybooks.gridbattlergame;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,17 +22,22 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mButtonGrid;
     private GridLayout mSpriteGrid;
     private Button mContinueButton;
+    private Characters[] PCs = new Characters[]{new Characters(), new Characters(), new Characters()};
+    private Characters[] Enemies = new Characters[]{new Characters(), new Characters(), new Characters()};
     private String phase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(this, SelectionScreen.class);
+        intent.putExtra("PC array", PCs);
+        characterSelectLauncher.launch(intent);
         setContentView(R.layout.activity_main);
 
         mButtonGrid = findViewById(R.id.button_grid);
         mSpriteGrid = findViewById(R.id.sprite_grid);
         mContinueButton = findViewById(R.id.continue_button);
-        mBattleGrid = new BattleGrid();
+        mBattleGrid = new BattleGrid(PCs, Enemies);
         mBattleGrid.deployEnemies();
         updateSprites();
         phase = "deploySquad";
@@ -77,5 +89,22 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Parcelable receivedObject = getExtra("PC array");
+                            PCs = data.getParcelableExtra();
+                        }
+                    }
+                }
+            }
+
+        );
 
 }
