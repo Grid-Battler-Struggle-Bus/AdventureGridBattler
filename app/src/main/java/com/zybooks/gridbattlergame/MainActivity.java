@@ -2,8 +2,8 @@ package com.zybooks.gridbattlergame;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +17,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.zybooks.gridbattlergame.domain.characters.CharacterClass;
+import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
+import com.zybooks.gridbattlergame.domain.ui.SelectionScreen;
+
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     private BattleGrid mBattleGrid;
     private GridLayout mButtonGrid;
     private GridLayout mSpriteGrid;
     private Button mContinueButton;
-    private Characters[] PCs = new Characters[]{new Characters(), new Characters(), new Characters()};
-    private Characters[] Enemies = new Characters[]{new Characters(), new Characters(), new Characters()};
+    private CharacterUnit[] PCs = new CharacterUnit[3];
+    private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin3", CharacterClass.GOBLIN, false)};
     private String phase;
     private int currTurn = 0;
     private Characters[] friendly;
@@ -35,10 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = new Intent(this, SelectionScreen.class);
-        intent.putExtra("PC array", PCs);
         characterSelectLauncher.launch(intent);
         setContentView(R.layout.activity_main);
-
         mButtonGrid = findViewById(R.id.button_grid);
         mSpriteGrid = findViewById(R.id.sprite_grid);
         mContinueButton = findViewById(R.id.continue_button);
@@ -51,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
             gridButton.setOnClickListener(this::onGridButtonClick);
         }
         mContinueButton.setOnClickListener(this::onContinueButtonClick);
-
     }
 
     private void onContinueButtonClick(View view) {
@@ -121,15 +124,23 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
+                        Log.d("TAG", "onActivityResult: response recieved");
                         Intent data = result.getData();
                         if (data != null) {
-                            Parcelable receivedObject = getExtra("PC array");
-                            PCs = data.getParcelableExtra();
+                            Log.d("TAG", "onActivityResult: results extracted");
+                            String char0Name = data.getStringExtra("char0Name");
+                            String char0Class = data.getStringExtra("char0Class");
+                            Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
+                            PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
+                            String char1Name = data.getStringExtra("char1Name");
+                            String char1Class = data.getStringExtra("char1Class");
+                            PCs[1] = new CharacterUnit(char1Name, CharacterClass.valueOf(char1Class), true);
+                            String char2Name = data.getStringExtra("char2Name");
+                            String char2Class = data.getStringExtra("char2Class");
+                            PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
                         }
                     }
                 }
             }
-
         );
-
 }
