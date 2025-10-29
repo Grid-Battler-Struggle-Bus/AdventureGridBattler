@@ -10,7 +10,9 @@ public final class CharacterUnit {
     public int location;
     public boolean deployed;
 
-    public CharacterUnit(String charName, CharacterClass unitClass) {
+    public boolean friendly;
+
+    public CharacterUnit(String charName, CharacterClass unitClass, boolean team) {
         this.charName = charName;
         this.unitClass = unitClass;
         this.unitStats = ClassFactory.statsFor(unitClass);
@@ -18,6 +20,7 @@ public final class CharacterUnit {
         this.equippedAbility = ClassFactory.defaultAbility(unitClass);
         this.location = -1;
         this.deployed = false;
+        this.friendly = team;
     }
 
     //Apply Damage

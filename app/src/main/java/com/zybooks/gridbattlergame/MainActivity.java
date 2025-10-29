@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     private Characters[] PCs = new Characters[]{new Characters(), new Characters(), new Characters()};
     private Characters[] Enemies = new Characters[]{new Characters(), new Characters(), new Characters()};
     private String phase;
+    private int currTurn = 0;
+    private Characters[] friendly;
+    private Characters[] enemy;
+    private Characters[] actor = friendly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,24 @@ public class MainActivity extends AppCompatActivity {
                     phase = "movement";
                 }
                 break;
+            case "movement":
+                phase = "attack";
+                break;
+            case "attack":
+                phase = "end";
+                break;
+            case "end":
+                if (actor == friendly) {
+                    actor = enemy;
+                    Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
+                    currTurn++;
+                } else {
+                    actor = friendly;
+                    Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
+                    currTurn++;
+                }
+                phase = "movement";
+                break;
         }
     }
 
@@ -74,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "movement":
                 mBattleGrid.manageMovement(buttonIndex);
-                updateSprites();
+                break;
+            case "attack":
+                mBattleGrid.manageAttack(buttonIndex); // Example method name
                 break;
         }
     }
