@@ -5,12 +5,12 @@ public final class CharacterUnit {
     public final String charName;
     public CharacterClass unitClass;
     public Stats unitStats;
-    private Ability equippedAbility;
+    public Ability equippedAbility;
     private int currentHp;
     public int location;
     public boolean deployed;
 
-    public boolean friendly;
+    public static boolean friendly;
 
     public CharacterUnit(String charName, CharacterClass unitClass, boolean team) {
         this.charName = charName;

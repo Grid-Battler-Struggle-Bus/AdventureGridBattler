@@ -34,6 +34,15 @@ public class BattleGrid {
         return battleGrid[row][col];
     }
 
+    public CharacterUnit getCharacter(int index) {
+        if (getContent(index).contains("character")){
+            return  PCs[Integer.parseInt(getContent(index).replaceAll("[^0-9]", ""))];
+        } else {
+            return  Enemies[Integer.parseInt(getContent(index).replaceAll("[^0-9]", ""))];
+        }
+
+    }
+
     public void setContent(int index, String content){
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
