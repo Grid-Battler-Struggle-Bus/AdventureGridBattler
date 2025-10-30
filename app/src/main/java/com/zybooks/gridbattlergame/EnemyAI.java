@@ -1,31 +1,33 @@
 package com.zybooks.gridbattlergame;
 
+import android.util.Log;
+
 import com.zybooks.gridbattlergame.BattleGrid;
+import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
+import com.zybooks.gridbattlergame.domain.combat.BattleService;
 
 public class EnemyAI {
+    private CharacterUnit character;
     private BattleGrid battleGrid;
     private int enemyIndex; // The grid index where this enemy is located
     private String enemyId; // e.g., "enemy0"
     private int movementRange = 1; // How many tiles the enemy can move
     private int attackRange = 1; // Attack range (1 = adjacent only)
 
-    public EnemyAI(BattleGrid battleGrid, String enemyId) {
+    public EnemyAI(BattleGrid battleGrid, CharacterUnit character) {
+        this.character = character;
         this.battleGrid = battleGrid;
-        this.enemyId = enemyId;
-        this.enemyIndex = findEnemyIndex();
+        this.enemyId = character.charName;
+        this.enemyIndex = character.location;
     }
 
     // Find where this enemy currently is on the grid
     private int findEnemyIndex() {
-        for (int i = 0; i < BattleGrid.GRID_HEIGHT * BattleGrid.GRID_WIDTH; i++) {
-            if (battleGrid.getContent(i).equals(enemyId)) {
-                return i;
-            }
-        }
-        return -1;
+        return character.location;
     }
 
     public void executeTurn() {
+        Log.d("TAG", "AI: AI called");
         // Update enemy position
         enemyIndex = findEnemyIndex();
 
@@ -52,10 +54,6 @@ public class EnemyAI {
         if (distance <= attackRange) {
             attack(nearestTargetIndex);
         }
-    }
-
-    //REMOVE AFTER TEST
-    private void attack(int nearestTargetIndex) {
     }
 
     private int findNearestTarget() {
@@ -141,30 +139,27 @@ public class EnemyAI {
 
     private void performEnemyMove(int newIndex) {
         // Move enemy to new position
-        battleGrid.setContent(newIndex, enemyId);
+        battleGrid.setContent(newIndex, "enemy" + Integer.parseInt(character.charName.replaceAll("[^0-9]", "")));
         battleGrid.setContent(enemyIndex, "empty");
+        character.location = newIndex;
     }
 
-    /// FIX ME: TEMPORARY ATTACK METHOD, REPLACE AFTER TURN IMPLEMENT
-    /// fuck it, let's just gray it out so it works during testing
-//
-//    private void attack(int targetIndex) {
-//        // Get which character is being attacked
-//        String targetContent = battleGrid.getContent(targetIndex);
-//
-//        // Extract character number (e.g., "character0" -> 0)
-//        int characterNum = Integer.parseInt(targetContent.replace("character", ""));
-//
-//        // Deal damage to the character
-//        battleGrid.PCs[characterNum].health -= 10; // Adjust damage as needed
-//
-//        Log.d("EnemyAI", enemyId + " attacked " + targetContent);
-//
-//        // Check if character died
-//        if (battleGrid.PCs[characterNum].health <= 0) {
-//            battleGrid.setContent(targetIndex, "empty");
-//            Log.d("EnemyAI", targetContent + " was defeated!");
-//        }
+    private void attack(int targetIndex) {
+       // Get which character is being attacked
+      CharacterUnit victim = battleGrid.getCharacter(targetIndex);
 
-    // }
+       // Extract character number (e.g., "character0" -> 0)
+       //int characterNum = Integer.parseInt(targetContent.replace("character", ""));
+
+        // Deal damage to the character
+        BattleService.dealBasicDamage(character,victim);
+
+        Log.d("EnemyAI", character.charName + " attacked " + victim.charName);
+
+        // Check if character died
+        if (victim.getCurrentHp() <= 0) {
+            battleGrid.setContent(targetIndex, "empty");
+            Log.d("EnemyAI", victim.charName + " was defeated!");
+        }
+    }
 }

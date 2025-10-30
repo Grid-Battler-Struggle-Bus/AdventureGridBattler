@@ -40,11 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mSpriteGrid;
     private Button mContinueButton;
     private CharacterUnit[] PCs = new CharacterUnit[3];
-    private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin3", CharacterClass.GOBLIN, false)};
+    private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin0", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false)};
+    private EnemyAI AI0;
+    private EnemyAI AI1;
+    private EnemyAI AI2;
     private String phase;
     private AbilityType AbilityType;
     private int currTurn = 0;
-
+    private int enemyTurns = 0;
     private int currentTarget = -1;
     int[] targets;
 
@@ -62,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         mContinueButton = findViewById(R.id.continue_button);
         mBattleGrid = new BattleGrid(PCs, Enemies);
         mBattleGrid.deployEnemies();
+        AI0 = new EnemyAI(mBattleGrid, Enemies[0]);
+        AI1 = new EnemyAI(mBattleGrid, Enemies[1]);
+        AI2 = new EnemyAI(mBattleGrid, Enemies[2]);
         updateSprites();
         phase = "deploySquad";
         for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
@@ -90,6 +96,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "attack":
                 end();
+                break;
+            case "enemy_turn":
+                Log.d("TAG", "ContinueButton: Go to Enemy Turn");
+                if(enemyTurns == 0) {
+                    AI0.executeTurn();
+                    enemyTurns++;
+                } else if (enemyTurns == 1) {
+                    AI1.executeTurn();
+                    enemyTurns++;
+                } else if (enemyTurns == 2) {
+                    AI2.executeTurn();
+                    enemyTurns++;
+                } else {
+                    end();
+                }
+                updateSprites();
                 break;
 
         }
@@ -214,18 +236,18 @@ public class MainActivity extends AppCompatActivity {
 
     //perform an attack
     public void performAttack(int index) {
-       switch (mBattleGrid.getCharacter(currentTarget).unitClass){
+       switch (mBattleGrid.getCharacter(currentTarget).unitClass) {
            case FIGHTER:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
                break;
            case RANGER:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
                break;
            case MAGE:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
                break;
            case ROGUE:
-               BattleService.dealBackstabDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               BattleService.dealBackstabDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
                break;
            case CLERIC:
                BattleService.healUnit(mBattleGrid.getCharacter(index));
@@ -244,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 Button gridButton = (Button) mButtonGrid.getChildAt(i);
                 gridButton.setEnabled(false);
             }
+            phase = "enemy_turn";
         } else {
             friendly = true;
             Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
@@ -252,8 +275,10 @@ public class MainActivity extends AppCompatActivity {
                 Button gridButton = (Button) mButtonGrid.getChildAt(i);
                 gridButton.setEnabled(true);
             }
+            enemyTurns = 0;
+            phase = "movement";
         }
-        phase = "movement";
+
     }
     public boolean checkContent (int[] array, int index){
         for (int i = 0; i < array.length; i++){
