@@ -89,29 +89,9 @@ public class MainActivity extends AppCompatActivity {
                 phase = "attack";
                 break;
             case "attack":
-                Log.d("TAG", "ContinueButton: Go to End");
-                phase = "end";
+                end();
                 break;
-            case "end":
-                if (friendly) {
-                    friendly = false;
-                    Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                    for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
-                        Button gridButton = (Button) mButtonGrid.getChildAt(i);
-                        gridButton.setEnabled(false);
-                    }
-                } else {
-                    friendly = true;
-                    Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                    for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
-                        Button gridButton = (Button) mButtonGrid.getChildAt(i);
-                        gridButton.setEnabled(true);
-                    }
-                }
-                phase = "movement";
-                break;
+
         }
     }
 
@@ -175,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
+
                 }
                 Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
@@ -186,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         tempList.add(tempArray[i]);
                     }
                 }
+
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
@@ -201,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         tempList.add(tempArray[i]);
                     }
                 }
+
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
@@ -215,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                         tempList.add(tempArray[i]);
                     }
                 }
+
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
@@ -250,7 +234,27 @@ public class MainActivity extends AppCompatActivity {
         currentTarget = -1;
         targets = new int[0];
     }
-
+  
+  private void end(){
+        if (friendly) {
+            friendly = false;
+            Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
+            currTurn++;
+            for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+                Button gridButton = (Button) mButtonGrid.getChildAt(i);
+                gridButton.setEnabled(false);
+            }
+        } else {
+            friendly = true;
+            Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
+            currTurn++;
+            for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+                Button gridButton = (Button) mButtonGrid.getChildAt(i);
+                gridButton.setEnabled(true);
+            }
+        }
+        phase = "movement";
+    }
     public boolean checkContent (int[] array, int index){
         for (int i = 0; i < array.length; i++){
             if (index == array[i]) return true;
