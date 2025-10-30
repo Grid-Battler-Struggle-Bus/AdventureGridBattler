@@ -1,5 +1,7 @@
 package com.zybooks.gridbattlergame.domain.combat;
 
+import android.util.Log;
+
 import com.zybooks.gridbattlergame.domain.characters.*;
 
 public final class BattleService {
@@ -8,6 +10,7 @@ public final class BattleService {
     //Perform Basic Attack
     public static void dealBasicDamage(CharacterUnit attacker, CharacterUnit defender) {
         int dmg = BattleCalculator.basicDamage(attacker, defender);
+        Log.d("TAG", "dealBasicDamage: " + attacker.charName + " to " + defender.charName + ": " +dmg);
         defender.applyDamage(dmg);
     }
     //Perform Backstab

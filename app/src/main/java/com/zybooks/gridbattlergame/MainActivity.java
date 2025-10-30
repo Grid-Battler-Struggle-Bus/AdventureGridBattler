@@ -81,9 +81,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     phase = "movement";
+                    Log.d("TAG", "ContinueButton: Go to Move");
                 }
                 break;
             case "movement":
+                Log.d("TAG", "ContinueButton: Go to Attack");
                 phase = "attack";
                 break;
             case "attack":
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 updateSprites();
                 break;
             case "attack":
-                manageAttack(buttonIndex); // Example method name
+                manageAttack(buttonIndex);
                 break;
         }
     }
@@ -127,13 +129,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void manageAttack(int index) {
         if (currentTarget == -1 && mBattleGrid.getContent(index).contains("character")) {
-            Log.d("TAG", "manageMovement: Start Attack");
+            Log.d("TAG", "manageAttack: Start Attack");
             startAttack(index);
         } else if (currentTarget == index) {
-            Log.d("TAG", "manageMovement: End Attack");
+            Log.d("TAG", "manageAttack: End Attack");
             endAttack(index);
-        } else if (Arrays.asList(targets).contains(index)){
-            Log.d("TAG", "manageMovement: Attack");
+        } else if (checkContent(targets, index)){
+            Log.d("TAG", "manageAttack: Attack");
             performAttack(index);
         }
     }
@@ -155,9 +157,10 @@ public class MainActivity extends AppCompatActivity {
                     targets[i] = tempList.get(i);
 
                 }
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
             case RANGED:
-                tempArray = mBattleGrid.getSpecialLine(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "Enemy");
+                tempArray = mBattleGrid.getSpecialLine(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -169,9 +172,11 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
             case MAGIC:
-                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "Enemy");
+                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(tempArray));
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -183,9 +188,10 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
             case EXPLOSIVE:
-                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "Enemy");
+                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -211,45 +217,25 @@ public class MainActivity extends AppCompatActivity {
        switch (mBattleGrid.getCharacter(currentTarget).unitClass){
            case FIGHTER:
                BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case RANGER:
                BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case MAGE:
                BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case ROGUE:
                BattleService.dealBackstabDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case CLERIC:
                BattleService.healUnit(mBattleGrid.getCharacter(index));
+               break;
        }
-
-
+        currentTarget = -1;
+        targets = new int[0];
     }
-
-                ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-                                if (result.getResultCode() == Activity.RESULT_OK) {
-                                    Intent data = result.getData();
-                                    if (data != null) {
-                                        Log.d("TAG", "onActivityResult: results extracted");
-                                        String char0Name = data.getStringExtra("char0Name");
-                                        String char0Class = data.getStringExtra("char0Class");
-                                        Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
-                                        PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
-                                        String char1Name = data.getStringExtra("char1Name");
-                                        String char1Class = data.getStringExtra("char1Class");
-                                        PCs[1] = new CharacterUnit(char1Name, CharacterClass.valueOf(char1Class), true);
-                                        String char2Name = data.getStringExtra("char2Name");
-                                        String char2Class = data.getStringExtra("char2Class");
-                                        PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
-                                    }
-                                }
-                            }
-                        }
-
-                );
-    private void end(){
+  
+  private void end(){
         if (friendly) {
             friendly = false;
             Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
@@ -269,4 +255,35 @@ public class MainActivity extends AppCompatActivity {
         }
         phase = "movement";
     }
+    public boolean checkContent (int[] array, int index){
+        for (int i = 0; i < array.length; i++){
+            if (index == array[i]) return true;
         }
+        return false;
+    }
+
+    ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+               @Override
+               public void onActivityResult(ActivityResult result) {
+                   if (result.getResultCode() == Activity.RESULT_OK) {
+                       Intent data = result.getData();
+                       if (data != null) {
+                           Log.d("TAG", "onActivityResult: results extracted");
+                           String char0Name = data.getStringExtra("char0Name");
+                           String char0Class = data.getStringExtra("char0Class");
+                           Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
+                           PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
+                           String char1Name = data.getStringExtra("char1Name");
+                           String char1Class = data.getStringExtra("char1Class");
+                           PCs[1] = new CharacterUnit(char1Name, CharacterClass.valueOf(char1Class), true);
+                           String char2Name = data.getStringExtra("char2Name");
+                           String char2Class = data.getStringExtra("char2Class");
+                           PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
+                       }
+                   }
+               }
+            }
+    );
+}

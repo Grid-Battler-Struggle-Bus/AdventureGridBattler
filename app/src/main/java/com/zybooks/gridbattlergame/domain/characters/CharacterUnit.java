@@ -1,5 +1,7 @@
 package com.zybooks.gridbattlergame.domain.characters;
 
+import android.util.Log;
+
 public final class CharacterUnit {
 
     public final String charName;
@@ -26,6 +28,7 @@ public final class CharacterUnit {
     //Apply Damage
     public void applyDamage(int damage) {
         currentHp = Math.max(0, (currentHp-damage));
+        Log.d("TAG", "current health: " + currentHp + " " + charName);
     }
     //Apply Explosive Damage
     public static void applyExplosiveDamage(int damage, CharacterUnit defender){
