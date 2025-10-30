@@ -57,7 +57,7 @@ public class BattleGrid {
         setContent (13, "enemy1");
         Enemies[2].location = 21;
         Enemies[2].deployed = true;
-        setContent (21, "enemy1");
+        setContent (21, "enemy2");
     }
     public void deployCharacter(int index){
         int row = index / GRID_WIDTH;

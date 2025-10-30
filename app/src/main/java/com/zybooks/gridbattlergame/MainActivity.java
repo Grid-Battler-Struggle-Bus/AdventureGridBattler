@@ -81,12 +81,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     phase = "movement";
+                    Log.d("TAG", "ContinueButton: Go to Move");
                 }
                 break;
             case "movement":
+                Log.d("TAG", "ContinueButton: Go to Attack");
                 phase = "attack";
                 break;
             case "attack":
+                Log.d("TAG", "ContinueButton: Go to End");
                 phase = "end";
                 break;
             case "end":
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 updateSprites();
                 break;
             case "attack":
-                manageAttack(buttonIndex); // Example method name
+                manageAttack(buttonIndex);
                 break;
         }
     }
@@ -146,13 +149,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void manageAttack(int index) {
         if (currentTarget == -1 && mBattleGrid.getContent(index).contains("character")) {
-            Log.d("TAG", "manageMovement: Start Attack");
+            Log.d("TAG", "manageAttack: Start Attack");
             startAttack(index);
         } else if (currentTarget == index) {
-            Log.d("TAG", "manageMovement: End Attack");
+            Log.d("TAG", "manageAttack: End Attack");
             endAttack(index);
-        } else if (Arrays.asList(targets).contains(index)){
-            Log.d("TAG", "manageMovement: Attack");
+        } else if (checkContent(targets, index)){
+            Log.d("TAG", "manageAttack: Attack");
             performAttack(index);
         }
     }
@@ -173,8 +176,10 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
+                break;
             case RANGED:
-                tempArray = mBattleGrid.getSpecialLine(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "Enemy");
+                tempArray = mBattleGrid.getSpecialLine(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -185,8 +190,11 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
+                break;
             case MAGIC:
-                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "Enemy");
+                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(tempArray));
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -197,8 +205,10 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
+                break;
             case EXPLOSIVE:
-                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "Enemy");
+                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -209,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                break;
         }
     }
 
@@ -222,17 +233,29 @@ public class MainActivity extends AppCompatActivity {
        switch (mBattleGrid.getCharacter(currentTarget).unitClass){
            case FIGHTER:
                BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case RANGER:
                BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case MAGE:
                BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case ROGUE:
                BattleService.dealBackstabDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+               break;
            case CLERIC:
                BattleService.healUnit(mBattleGrid.getCharacter(index));
+               break;
        }
+        currentTarget = -1;
+        targets = new int[0];
+    }
 
-
+    public boolean checkContent (int[] array, int index){
+        for (int i = 0; i < array.length; i++){
+            if (index == array[i]) return true;
+        }
+        return false;
     }
 
     ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
