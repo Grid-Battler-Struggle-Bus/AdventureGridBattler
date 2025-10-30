@@ -1,6 +1,11 @@
 package com.zybooks.gridbattlergame;
 
 import android.util.Log;
+
+import com.zybooks.gridbattlergame.domain.characters.Ability;
+import com.zybooks.gridbattlergame.domain.characters.AbilityType;
+import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +15,13 @@ public class BattleGrid {
     public String[][] battleGrid;
     public int deploymentCount = 0;
     public int currentTarget = -1;
-    public Characters[] PCs = {new Characters(), new Characters(), new Characters()};
+    public CharacterUnit[] PCs;
+    public CharacterUnit[] Enemies;
 
-    public BattleGrid() {
+    public BattleGrid(CharacterUnit[] incomingFriends, CharacterUnit[] incomingFoes) {
         battleGrid = new String[GRID_HEIGHT][GRID_WIDTH];
+        PCs = incomingFriends;
+        Enemies = incomingFoes;
         for (int row = 0; row < GRID_HEIGHT; row++){
             for (int col = 0; col < GRID_WIDTH; col++){
                 battleGrid[row][col] = "empty";
@@ -26,15 +34,36 @@ public class BattleGrid {
         return battleGrid[row][col];
     }
 
+    public CharacterUnit getCharacter(int index) {
+        if (getContent(index).contains("character")){
+            return  PCs[Integer.parseInt(getContent(index).replaceAll("[^0-9]", ""))];
+        } else {
+            return  Enemies[Integer.parseInt(getContent(index).replaceAll("[^0-9]", ""))];
+        }
+
+    }
+
     public void setContent(int index, String content){
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
         battleGrid[row][col] = content;
     }
-
+    public void deployEnemies(){
+        Enemies[0].location = 4;
+        Enemies[0].deployed = true;
+        setContent (4, "enemy0");
+        Enemies[1].location = 13;
+        Enemies[1].deployed = true;
+        setContent (13, "enemy1");
+        Enemies[2].location = 21;
+        Enemies[2].deployed = true;
+        setContent (21, "enemy2");
+    }
     public void deployCharacter(int index){
         int row = index / GRID_WIDTH;
         int col = index % GRID_WIDTH;
+        //only let character deploy on friendly side
+        if (col > 3) return;
         //remove character from previous position if deployed before
         if(PCs[deploymentCount].deployed){
             battleGrid[PCs[deploymentCount].location/8][PCs[deploymentCount].location%8] = "empty";
@@ -43,7 +72,7 @@ public class BattleGrid {
             PCs[deploymentCount].deployed = true;
         }
         battleGrid[row][col] = "character" + deploymentCount;
-        PCs[deploymentCount].location =  (row * 8) + col;
+        PCs[deploymentCount].location = (row * 8) + col;
     }
 
     //Return integer array of adjacent tiles index's

@@ -3,4 +3,6 @@
     <string name="test1">Tile</string>
     <string name="test2">Selected</string>
     <string name="test3">Open</string>
+    <string name="playerTurn">Your turn!</string>
+    <string name="enemyTurn">Enemies turn!</string>
 </resources>
