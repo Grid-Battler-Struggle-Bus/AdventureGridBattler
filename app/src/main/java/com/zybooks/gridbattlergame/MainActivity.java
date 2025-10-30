@@ -87,28 +87,9 @@ public class MainActivity extends AppCompatActivity {
                 phase = "attack";
                 break;
             case "attack":
-                phase = "end";
+                end();
                 break;
-            case "end":
-                if (friendly) {
-                    friendly = false;
-                    Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                    for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
-                        Button gridButton = (Button) mButtonGrid.getChildAt(i);
-                        gridButton.setEnabled(false);
-                    }
-                } else {
-                    friendly = true;
-                    Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
-                    currTurn++;
-                    for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
-                        Button gridButton = (Button) mButtonGrid.getChildAt(i);
-                        gridButton.setEnabled(true);
-                    }
-                }
-                phase = "movement";
-                break;
+
         }
     }
 
@@ -172,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
+
                 }
+                break;
             case RANGED:
                 tempArray = mBattleGrid.getSpecialLine(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "Enemy");
                 tempList = new ArrayList<>();
@@ -181,10 +164,12 @@ public class MainActivity extends AppCompatActivity {
                         tempList.add(tempArray[i]);
                     }
                 }
+
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                break;
             case MAGIC:
                 tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "Enemy");
                 tempList = new ArrayList<>();
@@ -193,10 +178,12 @@ public class MainActivity extends AppCompatActivity {
                         tempList.add(tempArray[i]);
                     }
                 }
+
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                break;
             case EXPLOSIVE:
                 tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "Enemy");
                 tempList = new ArrayList<>();
@@ -205,10 +192,12 @@ public class MainActivity extends AppCompatActivity {
                         tempList.add(tempArray[i]);
                     }
                 }
+
                 targets = new int[tempList.size()];
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                break;
         }
     }
 
@@ -260,5 +249,24 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                 );
-
+    private void end(){
+        if (friendly) {
+            friendly = false;
+            Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
+            currTurn++;
+            for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+                Button gridButton = (Button) mButtonGrid.getChildAt(i);
+                gridButton.setEnabled(false);
+            }
+        } else {
+            friendly = true;
+            Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
+            currTurn++;
+            for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+                Button gridButton = (Button) mButtonGrid.getChildAt(i);
+                gridButton.setEnabled(true);
+            }
+        }
+        phase = "movement";
+    }
         }
