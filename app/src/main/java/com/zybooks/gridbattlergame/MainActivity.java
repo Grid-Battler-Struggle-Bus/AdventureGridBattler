@@ -23,8 +23,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zybooks.gridbattlergame.domain.characters.AbilityType;
+import com.zybooks.gridbattlergame.domain.characters.BattleCalculator;
 import com.zybooks.gridbattlergame.domain.characters.CharacterClass;
 import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
+import com.zybooks.gridbattlergame.domain.combat.BattleService;
 import com.zybooks.gridbattlergame.domain.ui.SelectionScreen;
 
 import java.util.ArrayList;
@@ -92,10 +94,18 @@ public class MainActivity extends AppCompatActivity {
                     friendly = false;
                     Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
                     currTurn++;
+                    for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+                        Button gridButton = (Button) mButtonGrid.getChildAt(i);
+                        gridButton.setEnabled(false);
+                    }
                 } else {
                     friendly = true;
                     Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
                     currTurn++;
+                    for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+                        Button gridButton = (Button) mButtonGrid.getChildAt(i);
+                        gridButton.setEnabled(true);
+                    }
                 }
                 phase = "movement";
                 break;
@@ -207,6 +217,19 @@ public class MainActivity extends AppCompatActivity {
 
     //perform an attack
     public void performAttack(int index) {
+       switch (mBattleGrid.getCharacter(currentTarget).unitClass){
+           case FIGHTER:
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+           case RANGER:
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+           case MAGE:
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+           case ROGUE:
+               BattleService.dealBackstabDamage(mBattleGrid.getCharacter(currentTarget),mBattleGrid.getCharacter(index));
+           case CLERIC:
+               BattleService.healUnit(mBattleGrid.getCharacter(index));
+       }
+
 
     }
 
