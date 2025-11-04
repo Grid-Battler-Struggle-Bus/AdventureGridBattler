@@ -1,6 +1,8 @@
 package com.zybooks.gridbattlergame.domain.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -73,15 +75,16 @@ public class SelectionScreen extends AppCompatActivity {
         rogue_button.setOnClickListener(characterClickListener);
         cleric_button.setOnClickListener(characterClickListener);
 
-        /// Create the character objects
+        /// Push character class
         confirmButton.setOnClickListener(v -> {
-            ArrayList<CharacterUnit> chosenUnits = new ArrayList<>();
-
-            for (CharacterClass char_chosen : selectedClasses) {
-                // Make a unit with the class's default setup
-                chosenUnits.add(new CharacterUnit(char_chosen.name(), char_chosen));
+            ArrayList<CharacterClass> chosenUnits = new ArrayList<>(selectedClasses);
+            Intent intent = new Intent();
+            for (int i = 0; i < chosenUnits.size(); i++) {
+                intent.putExtra("char"+ i +"Name", chosenUnits.get(i).toString());
+                intent.putExtra("char"+ i + "Class", chosenUnits.get(i).toString());
             }
+            setResult(RESULT_OK, intent);
+            finish();
         });
     }
-    /// Push characters to main activity
 }
