@@ -224,7 +224,7 @@ public class BattleGrid {
         return lineTiles;
     }
 
-    public void manageMovement(int index){
+    /*public void manageMovement(int index){
         //did player click a character and is a move already started
         if (currentTarget == -1 && getContent(index).contains("character")){
             startMovement(index);
@@ -272,8 +272,5 @@ public class BattleGrid {
             }
         }
         currentTarget = -1;
-    }
-
-
-
+    }*/
 }

@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private AbilityType AbilityType;
     private int currTurn = 0;
     private int enemyTurns = 0;
-    private int currentTarget = -1;
-    int[] targets;
+    private int selectedTile = -1;
+    int[] targets = new int[0];
+    int[] openMoves = new int[0];
 
 
     @Override
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         AI0 = new EnemyAI(mBattleGrid, Enemies[0]);
         AI1 = new EnemyAI(mBattleGrid, Enemies[1]);
         AI2 = new EnemyAI(mBattleGrid, Enemies[2]);
-        updateSprites();
         phase = "deploySquad";
         for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
             Button gridButton = (Button) mButtonGrid.getChildAt(i);
@@ -127,11 +127,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case "movement":
-                mBattleGrid.manageMovement(buttonIndex);
+                manageMovement(buttonIndex);
                 updateSprites();
                 break;
             case "attack":
                 manageAttack(buttonIndex);
+                updateSprites();
                 break;
         }
     }
@@ -140,20 +141,65 @@ public class MainActivity extends AppCompatActivity {
     private void updateSprites() {
         for (int i = 0; i < mSpriteGrid.getChildCount(); i++) {
             TextView gridSprite = (TextView) mSpriteGrid.getChildAt(i);
-            if (mBattleGrid.getContent(i) == "empty") {
-                gridSprite.setText("");
-            } else if (mBattleGrid.getContent(i) == "open"){
-                gridSprite.setText("open");
-            } else if (mBattleGrid.getContent(i).contains("enemy") || mBattleGrid.getContent(i).contains("character")) {
-                gridSprite.setText(mBattleGrid.getCharacter(i).charName);
+            gridSprite.setText("");
+        }
+        for (int i = 0; i < PCs.length; i++) {
+            if (PCs[i].location != -1) {
+                TextView gridSprite = (TextView) mSpriteGrid.getChildAt(PCs[i].location);
+                gridSprite.setText((PCs[i].charName));
             }
         }
+        for (int i = 0; i < Enemies.length; i++){
+            if (Enemies[i].location != -1) {
+                TextView gridSprite = (TextView) mSpriteGrid.getChildAt(Enemies[i].location);
+                gridSprite.setText((Enemies[i].charName));
+            }
+        }
+        for (int i = 0; i < openMoves.length; i++){
+            TextView gridSprite = (TextView) mSpriteGrid.getChildAt(openMoves[i]);
+            gridSprite.setText(("Open"));
+        }
+    }
+
+    public void manageMovement(int index){
+        //did player click a character and is a move already started
+        if (selectedTile == -1 && mBattleGrid.getContent(index).contains("character")){
+            startMovement(index);
+            //let player click on character again to cancel move
+        } else if (selectedTile == index){
+            endMovement(index);
+            //Move character to a different square and reset board for next move
+        } else if (checkContent(openMoves, index)){
+            performMove(index);
+        }
+    }
+
+    //Sets tiles around target as available to move
+    public void startMovement(int index){
+        selectedTile = index;
+        openMoves = mBattleGrid.getSpecialAdjacent(index, "empty");
+    }
+
+    //Move character to an available adjacent tile
+    public void performMove(int index){
+        String currentChar = mBattleGrid.getContent(selectedTile);
+        mBattleGrid.setContent(index, currentChar);
+        PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
+        mBattleGrid.setContent(selectedTile, "empty");
+        selectedTile = - 1;
+        openMoves = new int[0];
+    }
+
+    //Undo start movement
+    public void endMovement(int index){
+        openMoves = new int[0];
+        selectedTile = -1;
     }
     public void manageAttack(int index) {
-        if (currentTarget == -1 && mBattleGrid.getContent(index).contains("character")) {
+        if (selectedTile == -1 && mBattleGrid.getContent(index).contains("character")) {
             Log.d("TAG", "manageAttack: Start Attack");
             startAttack(index);
-        } else if (currentTarget == index) {
+        } else if (selectedTile == index) {
             Log.d("TAG", "manageAttack: End Attack");
             endAttack(index);
         } else if (checkContent(targets, index)){
@@ -162,12 +208,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void startAttack(int index) {
-        currentTarget = index;
+        selectedTile = index;
         List<Integer> tempList;
         int [] tempArray;
         switch (mBattleGrid.getCharacter(index).equippedAbility.type) {
             case MELEE:
-                tempArray = mBattleGrid.getSpecialAdjacent(currentTarget, "enemy");
+                tempArray = mBattleGrid.getSpecialAdjacent(selectedTile, "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -182,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
             case RANGED:
-                tempArray = mBattleGrid.getSpecialLine(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "enemy");
+                tempArray = mBattleGrid.getSpecialLine(selectedTile, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -197,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
             case MAGIC:
-                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
+                tempArray = mBattleGrid.getSpecialRadius(selectedTile, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
                 Log.d("TAG", "Attack: Targets" + Arrays.toString(tempArray));
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
@@ -213,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
             case EXPLOSIVE:
-                tempArray = mBattleGrid.getSpecialRadius(currentTarget, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
+                tempArray = mBattleGrid.getSpecialRadius(selectedTile, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -230,30 +276,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void endAttack(int index) {
-        currentTarget = -1;
+        selectedTile = -1;
         targets = new int[0];
     }
 
     //perform an attack
     public void performAttack(int index) {
-       switch (mBattleGrid.getCharacter(currentTarget).unitClass) {
+       switch (mBattleGrid.getCharacter(selectedTile).unitClass) {
            case FIGHTER:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
                break;
            case RANGER:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
                break;
            case MAGE:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
+               BattleService.dealBasicDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
                break;
            case ROGUE:
-               BattleService.dealBackstabDamage(mBattleGrid.getCharacter(currentTarget), mBattleGrid.getCharacter(index));
+               BattleService.dealBackstabDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
                break;
            case CLERIC:
                BattleService.healUnit(mBattleGrid.getCharacter(index));
                break;
        }
-        currentTarget = -1;
+        selectedTile = -1;
         targets = new int[0];
     }
   
@@ -306,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
                            String char2Name = data.getStringExtra("char2Name");
                            String char2Class = data.getStringExtra("char2Class");
                            PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
+                           updateSprites();
                        }
                    }
                }
