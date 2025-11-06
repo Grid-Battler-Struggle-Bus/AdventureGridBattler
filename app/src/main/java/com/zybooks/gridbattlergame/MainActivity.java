@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private EnemyAI AI1;
     private EnemyAI AI2;
     private String phase;
-    private AbilityType AbilityType;
     private int currTurn = 0;
     private int enemyTurns = 0;
     private int selectedTile = -1;
@@ -137,27 +137,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void updateSprites() {
         for (int i = 0; i < mSpriteGrid.getChildCount(); i++) {
-            TextView gridSprite = (TextView) mSpriteGrid.getChildAt(i);
-            gridSprite.setText("");
+            ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(i);
+            gridSprite.setImageResource(0);
         }
         for (int i = 0; i < PCs.length; i++) {
             if (PCs[i].location != -1) {
-                TextView gridSprite = (TextView) mSpriteGrid.getChildAt(PCs[i].location);
-                gridSprite.setText((PCs[i].charName));
+                ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(PCs[i].location);
+                gridSprite.setImageResource(PCs[i].spriteId);
             }
         }
         for (int i = 0; i < Enemies.length; i++){
             if (Enemies[i].location != -1) {
-                TextView gridSprite = (TextView) mSpriteGrid.getChildAt(Enemies[i].location);
-                gridSprite.setText((Enemies[i].charName));
+                ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(Enemies[i].location);
+                gridSprite.setImageResource(Enemies[i].spriteId);
             }
         }
         for (int i = 0; i < openMoves.length; i++){
-            TextView gridSprite = (TextView) mSpriteGrid.getChildAt(openMoves[i]);
-            gridSprite.setText(("Open"));
+            ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(openMoves[i]);
+            gridSprite.setImageResource(R.drawable.board_movement_highlight);
         }
     }
 
@@ -176,8 +175,11 @@ public class MainActivity extends AppCompatActivity {
 
     //Sets tiles around target as available to move
     public void startMovement(int index){
-        selectedTile = index;
-        openMoves = mBattleGrid.getSpecialAdjacent(index, "empty");
+        String currentChar = mBattleGrid.getContent(index);
+        if (PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].currentMove < PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].unitStats.moveRange) {
+            selectedTile = index;
+            openMoves = mBattleGrid.getSpecialAdjacent(index, "empty");
+        }
     }
 
     //Move character to an available adjacent tile
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         String currentChar = mBattleGrid.getContent(selectedTile);
         mBattleGrid.setContent(index, currentChar);
         PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
+        PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].currentMove += 1;
         mBattleGrid.setContent(selectedTile, "empty");
         selectedTile = - 1;
         openMoves = new int[0];
