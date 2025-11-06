@@ -26,7 +26,8 @@ public final class CharacterUnit {
         this.deployed = false;
         this.friendly = team;
         this.spriteId = ClassFactory.spriteFor(unitClass);
-        this.currentHp = 0;
+        this.currentMove = 0;
+        Log.d("TAG", "max health: " + this.unitStats.maxHp + " " + charName);
     }
 
     //Apply Damage

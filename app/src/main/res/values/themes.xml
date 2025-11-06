@@ -7,26 +7,26 @@
 
     <style name="Theme.GridBattlerGame" parent="Base.Theme.GridBattlerGame" />
     <style name="grid_button">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
     <style name="grid_sprite">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:gravity">center</item>
     </style>
     <style name="friend_grid">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:src">@drawable/board_background_friend</item>
     </style>
     <style name="foe_grid">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:src">@drawable/board_background_foe</item>
     </style>

@@ -6,13 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
+
         <GridLayout
             android:id="@+id/background_grid"
             android:layout_width="wrap_content"
@@ -20,31 +23,55 @@
             android:columnCount="8"
             android:rowCount="3">
 
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/friend_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
-            <ImageView style="@style/foe_grid"/>
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/friend_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
+
+            <ImageView style="@style/foe_grid" />
         </GridLayout>
+
         <GridLayout
             android:id="@+id/sprite_grid"
             android:layout_width="wrap_content"
@@ -52,32 +79,103 @@
             android:columnCount="8"
             android:rowCount="3">
 
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
-            <TextView style="@style/grid_sprite"/>
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
 
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
         </GridLayout>
+
         <GridLayout
             android:id="@+id/button_grid"
             android:layout_width="wrap_content"
@@ -86,38 +184,154 @@
             android:rowCount="3">
 
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
+
             <Button style="@style/grid_button" />
 
         </GridLayout>
     </FrameLayout>
 
-    <Button
-        android:id="@+id/continue_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/rightLayout"
+        app:layout_constraintStart_toEndOf="@+id/leftLayout"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rightLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/frameLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightLayout"
+        app:layout_constraintStart_toEndOf="@+id/leftLayout"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+
+        <Button
+            android:id="@+id/continue_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/leftLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/character_one_card"
+            style="@style/grid_sprite"
+            app:layout_constraintBottom_toTopOf="@+id/character_two_card"
+            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/fighter_temp_sprite" />
+
+        <ProgressBar
+            android:id="@+id/character_one_health_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/character_two_card"
+            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_one_card" />
+
+        <ImageView
+            android:id="@+id/character_two_card"
+            style="@style/grid_sprite"
+            app:layout_constraintBottom_toTopOf="@+id/character_three_card"
+            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_one_card"
+            app:srcCompat="@drawable/mage_temp_sprite" />
+
+        <ProgressBar
+            android:id="@+id/character_two_health_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/character_three_card"
+            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_two_card" />
+
+        <ImageView
+            android:id="@+id/character_three_card"
+            style="@style/grid_sprite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_two_card"
+            app:srcCompat="@drawable/ranger_temp_sprite" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

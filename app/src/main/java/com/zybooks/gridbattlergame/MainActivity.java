@@ -1,11 +1,6 @@
 package com.zybooks.gridbattlergame;
 
-import static com.zybooks.gridbattlergame.domain.characters.AbilityType.EXPLOSIVE;
-import static com.zybooks.gridbattlergame.domain.characters.AbilityType.MAGIC;
-import static com.zybooks.gridbattlergame.domain.characters.AbilityType.MELEE;
-import static com.zybooks.gridbattlergame.domain.characters.AbilityType.RANGED;
 import static com.zybooks.gridbattlergame.domain.characters.CharacterUnit.friendly;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,22 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.zybooks.gridbattlergame.domain.characters.AbilityType;
-import com.zybooks.gridbattlergame.domain.characters.BattleCalculator;
 import com.zybooks.gridbattlergame.domain.characters.CharacterClass;
 import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
 import com.zybooks.gridbattlergame.domain.combat.BattleService;
 import com.zybooks.gridbattlergame.domain.ui.SelectionScreen;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -323,6 +312,9 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
                 Button gridButton = (Button) mButtonGrid.getChildAt(i);
                 gridButton.setEnabled(true);
+            }
+            for (int i = 0; i < PCs.length; i++) {
+                PCs[i].currentMove = 0;
             }
             enemyTurns = 0;
             phase = "movement";
