@@ -27,7 +27,6 @@ public final class CharacterUnit {
         this.friendly = team;
         this.spriteId = ClassFactory.spriteFor(unitClass);
         this.currentMove = 0;
-        Log.d("TAG", "max health: " + this.unitStats.maxHp + " " + charName);
     }
 
     //Apply Damage

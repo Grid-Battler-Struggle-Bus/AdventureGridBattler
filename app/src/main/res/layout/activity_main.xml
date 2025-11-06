@@ -256,7 +256,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"></LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/bottomLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -273,9 +273,9 @@
             android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/leftLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -288,50 +288,59 @@
         <ImageView
             android:id="@+id/character_one_card"
             style="@style/grid_sprite"
-            app:layout_constraintBottom_toTopOf="@+id/character_two_card"
-            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/fighter_temp_sprite" />
+            app:layout_constraintBottom_toTopOf="@+id/character_two_card"
+            app:srcCompat="@drawable/empty_grid" />
 
         <ProgressBar
-            android:id="@+id/character_one_health_bar"
+            android:id="@+id/character_one_bar"
             style="?android:attr/progressBarStyleHorizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_one_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/character_two_card"
-            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/character_one_card" />
+            android:progress="100" />
 
         <ImageView
             android:id="@+id/character_two_card"
             style="@style/grid_sprite"
-            app:layout_constraintBottom_toTopOf="@+id/character_three_card"
-            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/character_one_card"
-            app:srcCompat="@drawable/mage_temp_sprite" />
+            app:layout_constraintBottom_toTopOf="@+id/character_three_card"
+            app:srcCompat="@drawable/empty_grid" />
 
         <ProgressBar
-            android:id="@+id/character_two_health_bar"
+            android:id="@+id/character_two_bar"
             style="?android:attr/progressBarStyleHorizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_two_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/character_three_card"
-            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/character_two_card" />
+            android:progress="100" />
 
         <ImageView
             android:id="@+id/character_three_card"
             style="@style/grid_sprite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/character_two_card"
-            app:srcCompat="@drawable/ranger_temp_sprite" />
-    </LinearLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:srcCompat="@drawable/empty_grid" />
 
+        <ProgressBar
+            android:id="@+id/character_three_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character_three_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="100" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
