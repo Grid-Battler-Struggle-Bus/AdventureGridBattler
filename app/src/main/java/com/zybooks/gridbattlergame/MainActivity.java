@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private int selectedTile = -1;
     int[] targets = new int[0];
     int[] openMoves = new int[0];
-    TextView bannerText = findViewById(R.id.bannerText1);
+    TextView PhaseText = findViewById(R.id.bannerText1);
+    TextView TurnText = findViewById(R.id.bannerText2);
+
 
 
 

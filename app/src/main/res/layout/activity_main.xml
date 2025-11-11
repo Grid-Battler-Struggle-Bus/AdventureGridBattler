@@ -290,7 +290,7 @@
         </GridLayout>
     </FrameLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -298,7 +298,72 @@
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toStartOf="@+id/rightLayout"
         app:layout_constraintStart_toEndOf="@+id/leftLayout"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>   
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/phaseBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/turnBanner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+            <ImageView
+                android:id="@+id/bannerImage1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dragonheader_a"
+                android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/bannerText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phase"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/turnBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/phaseBanner"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/bannerImage2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dragonheader_a"
+                android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/bannerText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Turn"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+   
+        
 
     <FrameLayout
         android:id="@+id/bottomLayout"
@@ -462,58 +527,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"      
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintStart_toEndOf="@+id/frameLayout"
+       ></LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/phaseBanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:layout_gravity="center_horizontal">
 
-        <ImageView
-            android:id="@+id/bannerImage1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dragonheader_a"
-            android:adjustViewBounds="true" />
-
-        <TextView
-            android:id="@+id/bannerText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Phase"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:layout_gravity="center"/>
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/turnBanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:layout_gravity="center_horizontal">
-
-        <ImageView
-            android:id="@+id/bannerImage2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dragonheader_a"
-            android:adjustViewBounds="true" />
-
-        <TextView
-            android:id="@+id/bannerText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Turn"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:layout_gravity="center"/>
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
