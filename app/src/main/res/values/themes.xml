@@ -30,4 +30,22 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:src">@drawable/board_background_foe</item>
     </style>
+    <style name="available_movement">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:src">@drawable/movement_select_icon</item>
+    </style>
+    <style name="available_target">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:src">@drawable/enemy_select_icon</item>
+    </style>
+    <style name="character_select">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:src">@drawable/character_select_icon</item>
+    </style>
 </resources>
