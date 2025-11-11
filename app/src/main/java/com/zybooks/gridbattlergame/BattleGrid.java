@@ -72,6 +72,7 @@ public class BattleGrid {
             PCs[deploymentCount].deployed = true;
         }
         battleGrid[row][col] = "character" + deploymentCount;
+        //TODO: put deploy sound here
         PCs[deploymentCount].location = (row * 8) + col;
     }
 

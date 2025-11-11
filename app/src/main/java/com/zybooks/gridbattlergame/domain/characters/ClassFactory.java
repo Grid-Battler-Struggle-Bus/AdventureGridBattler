@@ -46,4 +46,6 @@ public final class ClassFactory extends AppCompatActivity {
             default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
         }
     }
+
+    //TODO: put character sound assigner here
 }
