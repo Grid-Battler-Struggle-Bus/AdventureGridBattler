@@ -1,6 +1,11 @@
 package com.zybooks.gridbattlergame.domain.characters;
 
-public final class ClassFactory {
+import android.graphics.drawable.Drawable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import com.zybooks.gridbattlergame.R;
+
+public final class ClassFactory extends AppCompatActivity {
     public static Stats statsFor(CharacterClass char_class) {
         switch (char_class) {
             //Reminder: Stats(int maxHp, atk, def, moveRange)
@@ -27,4 +32,20 @@ public final class ClassFactory {
             default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
         }
     }
+
+    public static int spriteFor(CharacterClass char_class) {
+        switch (char_class) {
+            //Reminder: Ability(String name, AbilityType type, int abRangeMin, abRangeMax)
+            case FIGHTER: return R.drawable.fighter_temp_sprite;
+            case MAGE: return R.drawable.mage_temp_sprite;
+            case RANGER: return R.drawable.ranger_temp_sprite;
+            case ROGUE: return R.drawable.rogue_temp_sprite;
+            case CLERIC: return R.drawable.cleric_temp_sprite;
+            case GOBLIN: return R.drawable.goblin_temp_sprite;
+            //If Non-existent class is entered, throw an error
+            default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
+        }
+    }
+
+    //TODO: put character sound assigner here
 }
