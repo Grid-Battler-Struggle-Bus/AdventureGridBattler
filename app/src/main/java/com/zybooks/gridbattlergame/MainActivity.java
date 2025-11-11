@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private int selectedTile = -1;
     int[] targets = new int[0];
     int[] openMoves = new int[0];
+    TextView bannerText = findViewById(R.id.bannerText);
+
 
 
     @Override
