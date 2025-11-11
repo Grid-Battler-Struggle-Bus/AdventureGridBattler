@@ -298,10 +298,7 @@
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toStartOf="@+id/rightLayout"
         app:layout_constraintStart_toEndOf="@+id/leftLayout"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
-
-   
-        
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>   
 
     <FrameLayout
         android:id="@+id/bottomLayout"

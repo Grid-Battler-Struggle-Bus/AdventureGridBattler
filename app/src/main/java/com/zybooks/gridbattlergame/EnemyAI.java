@@ -44,6 +44,7 @@ public class EnemyAI {
 
         // First, move towards the target
         moveTowards(nearestTargetIndex);
+        //TODO: play movement sound
 
         // Update position after moving
         enemyIndex = findEnemyIndex();
@@ -53,6 +54,7 @@ public class EnemyAI {
 
         if (distance <= attackRange) {
             attack(nearestTargetIndex);
+            //TODO: play attack sound
         }
     }
 
