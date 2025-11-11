@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private BattleGrid mBattleGrid;
     private GridLayout mButtonGrid;
     private GridLayout mSpriteGrid;
+    private GridLayout mHighlightGrid;
     private Button mContinueButton;
     private CharacterUnit[] PCs = new CharacterUnit[3];
     private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin0", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false)};
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         mButtonGrid = findViewById(R.id.button_grid);
         mSpriteGrid = findViewById(R.id.sprite_grid);
+        mHighlightGrid = findViewById(R.id.highlight_grid);
         mContinueButton = findViewById(R.id.continue_button);
         mBattleGrid = new BattleGrid(PCs, Enemies);
         mBattleGrid.deployEnemies();
@@ -83,8 +85,14 @@ public class MainActivity extends AppCompatActivity {
             case "movement":
                 Log.d("TAG", "ContinueButton: Go to Attack");
                 phase = "attack";
+                selectedTile = -1;
+                openMoves = new int[0];
+                updateSprites();
                 break;
             case "attack":
+                selectedTile = -1;
+                targets = new int[0];
+                updateSprites();
                 end();
                 break;
             case "enemy_turn":
@@ -131,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < mSpriteGrid.getChildCount(); i++) {
             ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(i);
             gridSprite.setImageResource(0);
+            ImageView gridHighlight = (ImageView) mHighlightGrid.getChildAt(i);
+            gridHighlight.setImageResource(0);
         }
         for (int i = 0; i < PCs.length; i++) {
             if (PCs[i].location != -1) {
@@ -144,16 +154,27 @@ public class MainActivity extends AppCompatActivity {
                 gridSprite.setImageResource(Enemies[i].spriteId);
             }
         }
-        for (int i = 0; i < openMoves.length; i++){
-            ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(openMoves[i]);
+
+        for (int i = 0; i < openMoves.length; i++) {
+            ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(openMoves[i]);
+            gridSprite.setImageResource(R.drawable.board_movement_highlight);
+        }
+
+        for (int i = 0; i < targets.length; i++) {
+            ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(targets[i]);
+            gridSprite.setImageResource(R.drawable.board_movement_highlight);
+        }
+
+        if (selectedTile != -1) {
+            ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(selectedTile);
             gridSprite.setImageResource(R.drawable.board_movement_highlight);
         }
         ProgressBar bar1 = findViewById(R.id.character_one_bar);
-        bar1.setProgress((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100));
+        bar1.setProgress((((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100))/10)*10);
         ProgressBar bar2 = findViewById(R.id.character_two_bar);
-        bar2.setProgress((int)(((float)PCs[1].getCurrentHp()/(float)PCs[1].unitStats.maxHp)*100));
+        bar2.setProgress((((int)(((float)PCs[1].getCurrentHp()/(float)PCs[1].unitStats.maxHp)*100))/10)*10);
         ProgressBar bar3 = findViewById((R.id.character_three_bar));
-        bar3.setProgress((int)(((float)PCs[2].getCurrentHp()/(float)PCs[2].unitStats.maxHp)*100));
+        bar3.setProgress((((int)(((float)PCs[2].getCurrentHp()/(float)PCs[2].unitStats.maxHp)*100))/10)*10);
     }
 
     public void manageMovement(int index){
@@ -348,17 +369,17 @@ public class MainActivity extends AppCompatActivity {
                            String char0Class = data.getStringExtra("char0Class");
                            Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
                            PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
-                           ImageView imageView1 = (ImageView) findViewById(R.id.character_one_card);
+                           ImageView imageView1 = findViewById(R.id.character_one_card);
                            imageView1.setImageResource(PCs[0].spriteId);
                            String char1Name = data.getStringExtra("char1Name");
                            String char1Class = data.getStringExtra("char1Class");
                            PCs[1] = new CharacterUnit(char1Name, CharacterClass.valueOf(char1Class), true);
-                           ImageView imageView2 = (ImageView) findViewById(R.id.character_two_card);
+                           ImageView imageView2 = findViewById(R.id.character_two_card);
                            imageView2.setImageResource(PCs[1].spriteId);
                            String char2Name = data.getStringExtra("char2Name");
                            String char2Class = data.getStringExtra("char2Class");
                            PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
-                           ImageView imageView3 = (ImageView) findViewById(R.id.character_three_card);
+                           ImageView imageView3 = findViewById(R.id.character_three_card);
                            imageView3.setImageResource(PCs[2].spriteId);
                            updateSprites();
                        }

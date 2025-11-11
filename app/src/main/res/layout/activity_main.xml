@@ -78,99 +78,155 @@
             android:layout_height="wrap_content"
             android:columnCount="8"
             android:rowCount="3">
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
-
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+        </GridLayout>
 
+        <GridLayout
+            android:id="@+id/highlight_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="8"
+            android:rowCount="3">
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
             <ImageView
                 style="@style/grid_sprite"
                 android:src="@drawable/empty_grid" />
@@ -286,6 +342,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/character_one_card_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/dragon9slices_b"
+            app:layout_constraintEnd_toEndOf="@+id/character_one_card"
+            app:layout_constraintStart_toStartOf="@+id/character_one_card"
+            app:layout_constraintTop_toTopOf="@+id/character_one_card"
+            app:layout_constraintBottom_toBottomOf="@+id/character_one_card" />
+
+        <ImageView
             android:id="@+id/character_one_card"
             style="@style/grid_sprite"
             app:layout_constraintEnd_toEndOf="parent"
@@ -297,12 +363,35 @@
         <ProgressBar
             android:id="@+id/character_one_bar"
             style="?android:attr/progressBarStyleHorizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/character_one_bar_cover"
+            app:layout_constraintStart_toStartOf="@+id/character_one_bar_cover"
             app:layout_constraintTop_toBottomOf="@+id/character_one_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:progressDrawable="@drawable/health_bar"
+            android:progress="100" />
+
+        <ImageView
+            android:id="@+id/character_one_bar_cover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:progress="100" />
+            app:srcCompat="@drawable/dragonhealthbar_c"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/character_one_bar"
+            app:layout_constraintBottom_toBottomOf="@+id/character_one_bar" />
+
+        <ImageView
+            android:id="@+id/character_two_card_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/dragon9slices_b"
+            app:layout_constraintEnd_toEndOf="@+id/character_two_card"
+            app:layout_constraintStart_toStartOf="@+id/character_two_card"
+            app:layout_constraintTop_toTopOf="@+id/character_two_card"
+            app:layout_constraintBottom_toBottomOf="@+id/character_two_card" />
 
         <ImageView
             android:id="@+id/character_two_card"
@@ -316,12 +405,35 @@
         <ProgressBar
             android:id="@+id/character_two_bar"
             style="?android:attr/progressBarStyleHorizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/character_two_bar_cover"
+            app:layout_constraintStart_toStartOf="@+id/character_two_bar_cover"
             app:layout_constraintTop_toBottomOf="@+id/character_two_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:progressDrawable="@drawable/health_bar"
+            android:progress="100" />
+
+        <ImageView
+            android:id="@+id/character_two_bar_cover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:progress="100" />
+            app:srcCompat="@drawable/dragonhealthbar_c"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/character_two_bar"
+            app:layout_constraintBottom_toBottomOf="@+id/character_two_bar" />
+
+        <ImageView
+            android:id="@+id/character_three_card_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/dragon9slices_b"
+            app:layout_constraintEnd_toEndOf="@+id/character_three_card"
+            app:layout_constraintStart_toStartOf="@+id/character_three_card"
+            app:layout_constraintTop_toTopOf="@+id/character_three_card"
+            app:layout_constraintBottom_toBottomOf="@+id/character_three_card" />
 
         <ImageView
             android:id="@+id/character_three_card"
@@ -335,12 +447,25 @@
         <ProgressBar
             android:id="@+id/character_three_bar"
             style="?android:attr/progressBarStyleHorizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/character_three_bar_cover"
+            app:layout_constraintStart_toStartOf="@+id/character_three_bar_cover"
             app:layout_constraintTop_toBottomOf="@+id/character_three_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:progressDrawable="@drawable/health_bar"
+            android:progress="100" />
+
+        <ImageView
+            android:id="@+id/character_three_bar_cover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:progress="100" />
+            app:srcCompat="@drawable/dragonhealthbar_c"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/character_three_bar"
+            app:layout_constraintBottom_toBottomOf="@+id/character_three_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
