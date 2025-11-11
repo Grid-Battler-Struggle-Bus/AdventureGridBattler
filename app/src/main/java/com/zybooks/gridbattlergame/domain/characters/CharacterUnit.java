@@ -15,6 +15,7 @@ public final class CharacterUnit {
     public static boolean friendly;
     public int spriteId;
     public int currentMove;
+    public boolean hasAttacked;
 
     public CharacterUnit(String charName, CharacterClass unitClass, boolean team) {
         this.charName = charName;
@@ -27,6 +28,8 @@ public final class CharacterUnit {
         this.friendly = team;
         this.spriteId = ClassFactory.spriteFor(unitClass);
         this.currentMove = 0;
+        this.hasAttacked = false;
+        //TODO: add character sounds variables
     }
 
     //Apply Damage

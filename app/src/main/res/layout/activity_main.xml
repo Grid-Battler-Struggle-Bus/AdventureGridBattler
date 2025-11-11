@@ -307,10 +307,8 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/frameLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
     <FrameLayout
         android:id="@+id/bottomLayout"

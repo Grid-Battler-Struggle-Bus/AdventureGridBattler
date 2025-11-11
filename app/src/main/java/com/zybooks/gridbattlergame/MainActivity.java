@@ -4,6 +4,7 @@ import static com.zybooks.gridbattlergame.domain.characters.CharacterUnit.friend
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -95,23 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 updateSprites();
                 end();
                 break;
-            case "enemy_turn":
-                Log.d("TAG", "ContinueButton: Go to Enemy Turn");
-                if(enemyTurns == 0) {
-                    AI0.executeTurn();
-                    enemyTurns++;
-                } else if (enemyTurns == 1) {
-                    AI1.executeTurn();
-                    enemyTurns++;
-                } else if (enemyTurns == 2) {
-                    AI2.executeTurn();
-                    enemyTurns++;
-                } else {
-                    end();
-                }
-                updateSprites();
-                break;
-
         }
     }
 
@@ -170,11 +154,11 @@ public class MainActivity extends AppCompatActivity {
             gridSprite.setImageResource(R.drawable.board_movement_highlight);
         }
         ProgressBar bar1 = findViewById(R.id.character_one_bar);
-        bar1.setProgress((((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100))/10)*10);
+        bar1.setProgress((((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100))/20)*20);
         ProgressBar bar2 = findViewById(R.id.character_two_bar);
-        bar2.setProgress((((int)(((float)PCs[1].getCurrentHp()/(float)PCs[1].unitStats.maxHp)*100))/10)*10);
+        bar2.setProgress((((int)(((float)PCs[1].getCurrentHp()/(float)PCs[1].unitStats.maxHp)*100))/20)*20);
         ProgressBar bar3 = findViewById((R.id.character_three_bar));
-        bar3.setProgress((((int)(((float)PCs[2].getCurrentHp()/(float)PCs[2].unitStats.maxHp)*100))/10)*10);
+        bar3.setProgress((((int)(((float)PCs[2].getCurrentHp()/(float)PCs[2].unitStats.maxHp)*100))/20)*20);
     }
 
     public void manageMovement(int index){
@@ -205,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         mBattleGrid.setContent(index, currentChar);
         PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
         PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].currentMove += 1;
+        //TODO: put character move sound
         mBattleGrid.setContent(selectedTile, "empty");
         selectedTile = - 1;
         openMoves = new int[0];
@@ -228,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void startAttack(int index) {
+        if (!mBattleGrid.getCharacter(index).hasAttacked) return;
         selectedTile = index;
         List<Integer> tempList;
         int [] tempArray;
@@ -319,12 +305,12 @@ public class MainActivity extends AppCompatActivity {
                BattleService.healUnit(mBattleGrid.getCharacter(index));
                break;
        }
+       mBattleGrid.getCharacter(index).hasAttacked = true;
         selectedTile = -1;
         targets = new int[0];
     }
   
   private void end(){
-        if (friendly) {
             friendly = false;
             Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
             currTurn++;
@@ -332,22 +318,40 @@ public class MainActivity extends AppCompatActivity {
                 Button gridButton = (Button) mButtonGrid.getChildAt(i);
                 gridButton.setEnabled(false);
             }
+            mContinueButton.setEnabled(false);
             phase = "enemy_turn";
-        } else {
-            friendly = true;
-            Toast.makeText(this, R.string.playerTurn, Toast.LENGTH_SHORT).show();
-            currTurn++;
-            for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
-                Button gridButton = (Button) mButtonGrid.getChildAt(i);
-                gridButton.setEnabled(true);
-            }
-            for (int i = 0; i < PCs.length; i++) {
-                PCs[i].currentMove = 0;
-            }
-            enemyTurns = 0;
-            phase = "movement";
-        }
-
+            CountDownTimer Timer = new CountDownTimer(4000, 1000){
+                int count = 0;
+                public void onFinish() {
+                    count = 0;
+                    mContinueButton.setEnabled(true);
+                    for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
+                        Button gridButton = (Button) mButtonGrid.getChildAt(i);
+                        gridButton.setEnabled(true);
+                    }
+                    for (int i = 0; i < PCs.length; i++) {
+                        PCs[i].currentMove = 0;
+                        PCs[i].hasAttacked = false;
+                    }
+                    friendly = true;
+                    phase = "movement";
+                }
+                public void onTick(long millisUntilFinished) {
+                    if (count == 1){
+                        AI0.executeTurn();
+                        count++;
+                    } else if(count == 2){
+                        AI1.executeTurn();
+                        count++;
+                    } else if (count == 3) {
+                        AI2.executeTurn();
+                        count++;
+                    } else {
+                        count++;
+                    }
+                    updateSprites();
+                }
+            }.start();
     }
     public boolean checkContent (int[] array, int index){
         for (int i = 0; i < array.length; i++){
