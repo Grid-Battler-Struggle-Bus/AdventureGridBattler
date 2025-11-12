@@ -5,4 +5,11 @@
     <color name="gray">#666666</color>
     <color name="red">#FF0000</color>
     <color name="orange">#FFA500</color>
+    <color name="crimson">#87001A</color>
+    <color name="green">#119503</color>
+    <color name="purple">#4100A0</color>
+    <color name="yellow">#B4B20B</color>
+    <color name="parchment">#FFE2A0</color>
+    <color name="dark_gray">#444444</color>
+    <color name="health_red">#c71c10</color>
 </resources>

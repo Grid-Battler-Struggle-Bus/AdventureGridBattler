@@ -48,4 +48,47 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:src">@drawable/character_select_icon</item>
     </style>
+    <style name="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <style name="char_select_fighter" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/crimson</item>
+    </style>
+    <style name="char_select_mage" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/purple</item>
+    </style>
+    <style name="char_select_ranger" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/green</item>
+    </style>
+    <style name="char_select_rogue" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+    <style name="char_select_cleric" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/yellow</item>
+    </style>
+    <style name="parchment_paper">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/parchment</item>
+        >>>>>>> a80a7f4529945731e4977d169353eadd12c3e943
+    </style>
 </resources>

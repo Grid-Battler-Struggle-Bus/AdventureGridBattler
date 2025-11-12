@@ -67,11 +67,12 @@ public class BattleGrid {
         //remove character from previous position if deployed before
         if(PCs[deploymentCount].deployed){
             battleGrid[PCs[deploymentCount].location/8][PCs[deploymentCount].location%8] = "empty";
-        //set that character has been deployed now
+            //set that character has been deployed now
         } else {
             PCs[deploymentCount].deployed = true;
         }
         battleGrid[row][col] = "character" + deploymentCount;
+        //TODO: put deploy sound here
         PCs[deploymentCount].location = (row * 8) + col;
     }
 
@@ -223,57 +224,4 @@ public class BattleGrid {
         }
         return lineTiles;
     }
-
-    public void manageMovement(int index){
-        //did player click a character and is a move already started
-        if (currentTarget == -1 && getContent(index).contains("character")){
-            startMovement(index);
-        //let player click on character again to cancel move
-        } else if (currentTarget == index){
-            endMovement(index);
-        //Move character to a different square and reset board for next move
-        } else if (getContent(index).contains("open")){
-            performMove(index);
-        }
-    }
-
-    //Sets tiles around target as available to move
-    public void startMovement(int index){
-        currentTarget = index;
-        int[] adjacent = getSpecialAdjacent(index, "empty");
-        for (int i = 0; i < adjacent.length; i++){
-            if(adjacent[i] != -1) {
-                setContent(adjacent[i], "open");
-            }
-        }
-    }
-
-    //Move character to an available adjacent tile
-    public void performMove(int index){
-        String currentChar = getContent(currentTarget);
-        setContent(index, currentChar);
-        PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
-        int[] adjacent = getSpecialAdjacent(currentTarget, "open");
-        for (int i = 0; i < adjacent.length; i++){
-            if(adjacent[i] != -1) {
-                setContent(adjacent[i], "empty");
-            }
-        }
-        setContent(currentTarget, "empty");
-        currentTarget = - 1;
-    }
-
-    //Undo start movement
-    public void endMovement(int index){
-        int[] adjacent = getSpecialAdjacent(index, "open");
-        for (int i = 0; i < adjacent.length; i++){
-            if(adjacent[i] != -1) {
-                setContent(adjacent[i], "empty");
-            }
-        }
-        currentTarget = -1;
-    }
-
-
-
 }
