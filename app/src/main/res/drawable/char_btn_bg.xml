@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <corners android:radius="14dp"/>
+        <solid android:color="#222222"/>   <!-- base fill; your color tiles will sit under text -->
+        <stroke android:width="2dp" android:color="#9AA0A6"/>  <!-- subtle border -->
+        <padding android:left="12dp" android:top="12dp"
+            android:right="12dp" android:bottom="12dp"/>
+    </shape>

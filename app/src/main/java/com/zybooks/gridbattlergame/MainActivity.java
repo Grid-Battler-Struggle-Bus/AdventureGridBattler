@@ -406,11 +406,10 @@ public class MainActivity extends AppCompatActivity {
                     phase = "movement";
                     updateBanner();
                     showTurnOverlay("Player Turn");
-                }
-                for (int i = 0; i < PCs.length; i++) {
+                    for (int i = 0; i < PCs.length; i++) {
                     PCs[i].currentMove = 0;
                     PCs[i].hasAttacked = false;
-                }
+                    }
                 friendly = true;
                 phase = "movement";
             }
@@ -535,34 +534,34 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
-               @Override
-               public void onActivityResult(ActivityResult result) {
-                   if (result.getResultCode() == Activity.RESULT_OK) {
-                       Intent data = result.getData();
-                       if (data != null) {
-                           Log.d("TAG", "onActivityResult: results extracted");
-                           String char0Name = data.getStringExtra("char0Name");
-                           String char0Class = data.getStringExtra("char0Class");
-                           Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
-                           PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
-                           ImageView imageView1 = findViewById(R.id.character_one_card);
-                           imageView1.setImageResource(PCs[0].spriteId);
-                           String char1Name = data.getStringExtra("char1Name");
-                           String char1Class = data.getStringExtra("char1Class");
-                           PCs[1] = new CharacterUnit(char1Name, CharacterClass.valueOf(char1Class), true);
-                           ImageView imageView2 = findViewById(R.id.character_two_card);
-                           imageView2.setImageResource(PCs[1].spriteId);
-                           String char2Name = data.getStringExtra("char2Name");
-                           String char2Class = data.getStringExtra("char2Class");
-                           PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
-                           ImageView imageView3 = findViewById(R.id.character_three_card);
-                           imageView3.setImageResource(PCs[2].spriteId);
-                           updateSprites();
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Log.d("TAG", "onActivityResult: results extracted");
+                            String char0Name = data.getStringExtra("char0Name");
+                            String char0Class = data.getStringExtra("char0Class");
+                            Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
+                            PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
+                            ImageView imageView1 = findViewById(R.id.character_one_card);
+                            imageView1.setImageResource(PCs[0].spriteId);
+                            String char1Name = data.getStringExtra("char1Name");
+                            String char1Class = data.getStringExtra("char1Class");
+                            PCs[1] = new CharacterUnit(char1Name, CharacterClass.valueOf(char1Class), true);
+                            ImageView imageView2 = findViewById(R.id.character_two_card);
+                            imageView2.setImageResource(PCs[1].spriteId);
+                            String char2Name = data.getStringExtra("char2Name");
+                            String char2Class = data.getStringExtra("char2Class");
+                            PCs[2] = new CharacterUnit(char2Name, CharacterClass.valueOf(char2Class), true);
+                            ImageView imageView3 = findViewById(R.id.character_three_card);
+                            imageView3.setImageResource(PCs[2].spriteId);
+                            updateSprites();
 
-                           initMusic();
-                       }
-                   }
-               }
+                            initMusic();
+                        }
+                    }
+                }
             }
     );
 
