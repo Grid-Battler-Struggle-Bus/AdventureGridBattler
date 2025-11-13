@@ -33,16 +33,28 @@ public final class ClassFactory extends AppCompatActivity {
         }
     }
 
-    public static int spriteFor(CharacterClass char_class) {
+    // IDLE sprite (what you use most of the time)
+    public static int idleSpriteFor(CharacterClass char_class) {
         switch (char_class) {
-            //Reminder: Ability(String name, AbilityType type, int abRangeMin, abRangeMax)
-            case FIGHTER: return R.drawable.fighter_temp_sprite;
-            case MAGE: return R.drawable.mage_temp_sprite;
-            case RANGER: return R.drawable.ranger_temp_sprite;
-            case ROGUE: return R.drawable.rogue_temp_sprite;
-            case CLERIC: return R.drawable.cleric_temp_sprite;
-            case GOBLIN: return R.drawable.goblin_temp_sprite;
-            //If Non-existent class is entered, throw an error
+            case FIGHTER: return R.drawable.fighter_idle;
+            case MAGE:    return R.drawable.mage_temp_sprite;
+            case RANGER:  return R.drawable.ranger_temp_sprite;
+            case ROGUE:   return R.drawable.rogue_idle;
+            case CLERIC:  return R.drawable.cleric_temp_sprite;
+            case GOBLIN:  return R.drawable.skeleton_idle;
+            default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
+        }
+    }
+
+    // ATTACK sprite (used briefly when they attack)
+    public static int attackSpriteFor(CharacterClass char_class) {
+        switch (char_class) {
+            case FIGHTER: return R.drawable.fighter_attack;
+            case MAGE:    return R.drawable.mage_temp_sprite;
+            case RANGER:  return R.drawable.ranger_temp_sprite;
+            case ROGUE:   return R.drawable.rogue_attack;
+            case CLERIC:  return R.drawable.cleric_temp_sprite;
+            case GOBLIN:  return R.drawable.skeleton_attack;
             default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
         }
     }

@@ -13,6 +13,8 @@ public final class CharacterUnit {
     public int location;
     public boolean deployed;
     public static boolean friendly;
+    public final int idleSpriteId;
+    public final int attackSpriteId;
     public int spriteId;
     public int currentMove;
     public boolean hasAttacked;
@@ -26,7 +28,9 @@ public final class CharacterUnit {
         this.location = -1;
         this.deployed = false;
         this.friendly = team;
-        this.spriteId = ClassFactory.spriteFor(unitClass);
+        this.idleSpriteId   = ClassFactory.idleSpriteFor(unitClass);
+        this.attackSpriteId = ClassFactory.attackSpriteFor(unitClass);
+        this.spriteId       = idleSpriteId;
         this.currentMove = 0;
         this.hasAttacked = false;
         //TODO: add character sounds variables

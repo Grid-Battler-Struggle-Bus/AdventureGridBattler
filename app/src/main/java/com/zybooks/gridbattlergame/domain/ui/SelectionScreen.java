@@ -1,6 +1,7 @@
 package com.zybooks.gridbattlergame.domain.ui;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 public class SelectionScreen extends AppCompatActivity {
+    private MediaPlayer selectionMusic;
     LinkedHashSet<CharacterClass> selectedClasses = new LinkedHashSet<>();
     final int MAX_SELECTIONS = 3;
 

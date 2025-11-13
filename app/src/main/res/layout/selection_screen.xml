@@ -4,6 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/character_stat_background_banner"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -74,6 +75,7 @@
         android:labelFor="@+id/choose_char_text"
         android:text="Choose Your Character"
         android:textSize="24sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
