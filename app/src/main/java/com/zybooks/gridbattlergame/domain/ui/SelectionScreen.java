@@ -1,6 +1,7 @@
 package com.zybooks.gridbattlergame.domain.ui;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 public class SelectionScreen extends AppCompatActivity {
+    private MediaPlayer selectionMusic;
     LinkedHashSet<CharacterClass> selectedClasses = new LinkedHashSet<>();
     final int MAX_SELECTIONS = 3;
 
@@ -26,6 +28,11 @@ public class SelectionScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selection_screen);
+
+        selectionMusic = MediaPlayer.create(this, R.raw.selection_screen_loop);
+        selectionMusic.setLooping(true);
+        selectionMusic.setVolume(0.4f, 0.4f);
+        selectionMusic.start();
 
         /// Grabbing References
         LinearLayout infoPanel = findViewById(R.id.details_panel);
@@ -119,6 +126,31 @@ public class SelectionScreen extends AppCompatActivity {
 
         // ensure visible
         panel.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (selectionMusic != null && selectionMusic.isPlaying()) {
+            selectionMusic.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (selectionMusic != null && !selectionMusic.isPlaying()) {
+            selectionMusic.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (selectionMusic != null) {
+            selectionMusic.release();
+            selectionMusic = null;
+        }
     }
 
 }

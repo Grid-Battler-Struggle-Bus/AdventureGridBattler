@@ -1,14 +1,25 @@
 package com.zybooks.gridbattlergame;
 
 import static com.zybooks.gridbattlergame.domain.characters.CharacterUnit.friendly;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mButtonGrid;
     private GridLayout mSpriteGrid;
     private GridLayout mHighlightGrid;
-    private Button mContinueButton;
     private CharacterUnit[] PCs = new CharacterUnit[3];
     private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin0", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false)};
     private EnemyAI AI0;
@@ -44,9 +54,16 @@ public class MainActivity extends AppCompatActivity {
     private int selectedTile = -1;
     int[] targets = new int[0];
     int[] openMoves = new int[0];
-    TextView PhaseText = findViewById(R.id.bannerText1);
-    TextView TurnText = findViewById(R.id.bannerText2);
-
+    private TextView PhaseText;
+    private TextView TurnText;
+    private FrameLayout turnOverlay;
+    private TextView turnOverlayText;
+    private float screenWidth;
+    private ImageButton mContinueButton;
+    private MediaPlayer battleIntro;
+    private MediaPlayer battleLoop;
+    private SoundPool soundPool;
+    private int sfxBlade, sfxBow, sfxFire, sfxMove, sfxHit, sfxButton;
 
 
 
@@ -58,16 +75,32 @@ public class MainActivity extends AppCompatActivity {
         characterSelectLauncher.launch(intent);
         setContentView(R.layout.activity_main);
 
+        initSoundEffects();
+
+        turnOverlay = findViewById(R.id.turnOverlay);
+        turnOverlayText = findViewById(R.id.turnOverlayText);
+        screenWidth = getResources().getDisplayMetrics().widthPixels;
+        PhaseText = findViewById(R.id.bannerText1);
+        TurnText  = findViewById(R.id.bannerText2);
+
         mButtonGrid = findViewById(R.id.button_grid);
         mSpriteGrid = findViewById(R.id.sprite_grid);
         mHighlightGrid = findViewById(R.id.highlight_grid);
         mContinueButton = findViewById(R.id.continue_button);
+        mContinueButton.setOnClickListener(v -> {
+            if (soundPool != null) soundPool.play(sfxButton, 1f, 1f, 1, 0, 1f);
+            onContinueButtonClick(v);
+        });
+        mContinueButton.setOnClickListener(this::onContinueButtonClick);
         mBattleGrid = new BattleGrid(PCs, Enemies);
         mBattleGrid.deployEnemies();
-        AI0 = new EnemyAI(mBattleGrid, Enemies[0]);
-        AI1 = new EnemyAI(mBattleGrid, Enemies[1]);
-        AI2 = new EnemyAI(mBattleGrid, Enemies[2]);
+        AI0 = new EnemyAI(mBattleGrid, Enemies[0], this::updateSprites, soundPool, sfxMove, sfxBow, sfxHit);
+        AI1 = new EnemyAI(mBattleGrid, Enemies[1], this::updateSprites, soundPool, sfxMove, sfxBow, sfxHit);
+        AI2 = new EnemyAI(mBattleGrid, Enemies[2], this::updateSprites, soundPool, sfxMove, sfxBow, sfxHit);
         phase = "deploySquad";
+        friendly = true;
+        updateBanner();
+        showTurnOverlay("Player Turn");
         for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
             Button gridButton = (Button) mButtonGrid.getChildAt(i);
             gridButton.setOnClickListener(this::onGridButtonClick);
@@ -86,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     phase = "movement";
                     Log.d("TAG", "ContinueButton: Go to Move");
+                    updateBanner();
                 }
                 break;
             case "movement":
@@ -94,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 selectedTile = -1;
                 openMoves = new int[0];
                 updateSprites();
+                updateBanner();
                 break;
             case "attack":
                 selectedTile = -1;
@@ -195,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
         PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].currentMove += 1;
         //TODO: put character move sound
+        if (soundPool != null) soundPool.play(sfxMove, 1f, 1f, 1, 0, 1f);
         mBattleGrid.setContent(selectedTile, "empty");
         selectedTile = - 1;
         openMoves = new int[0];
@@ -218,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void startAttack(int index) {
-        if (!mBattleGrid.getCharacter(index).hasAttacked) return;
+        if (mBattleGrid.getCharacter(index).hasAttacked) return;
         selectedTile = index;
         List<Integer> tempList;
         int [] tempArray;
@@ -291,33 +327,60 @@ public class MainActivity extends AppCompatActivity {
         targets = new int[0];
     }
 
-    //perform an attack
     public void performAttack(int index) {
-       switch (mBattleGrid.getCharacter(selectedTile).unitClass) {
-           case FIGHTER:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
-               break;
-           case RANGER:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
-               break;
-           case MAGE:
-               BattleService.dealBasicDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
-               break;
-           case ROGUE:
-               BattleService.dealBackstabDamage(mBattleGrid.getCharacter(selectedTile), mBattleGrid.getCharacter(index));
-               break;
-           case CLERIC:
-               BattleService.healUnit(mBattleGrid.getCharacter(index));
-               break;
-       }
-       mBattleGrid.getCharacter(index).hasAttacked = true;
+
+        final int attackerTileIndex = selectedTile;
+        final CharacterUnit attacker = mBattleGrid.getCharacter(attackerTileIndex);
+        final CharacterUnit victim   = mBattleGrid.getCharacter(index);
+
+        attacker.spriteId = attacker.attackSpriteId;
+        updateSprites();
+
+        switch (attacker.unitClass) {
+            case FIGHTER:
+                if (soundPool != null) soundPool.play(sfxBlade, 1f, 1f, 1, 0, 1f);
+                BattleService.dealBasicDamage(attacker, victim);
+                break;
+            case RANGER:
+                if (soundPool != null) soundPool.play(sfxBow, 1f, 1f, 1, 0, 1f);
+                BattleService.dealBasicDamage(attacker, victim);
+                break;
+            case MAGE:
+                if (soundPool != null) soundPool.play(sfxFire, 1f, 1f, 1, 0, 1f);
+                BattleService.dealBasicDamage(attacker, victim);
+                break;
+            case ROGUE:
+                if (soundPool != null) soundPool.play(sfxBlade, 1f, 1f, 1, 0, 1f);
+                BattleService.dealBackstabDamage(attacker, victim);
+                break;
+            case CLERIC:
+                BattleService.healUnit(victim);
+                break;
+        }
+
+        if (soundPool != null && attacker.unitClass != CharacterClass.CLERIC) {
+            soundPool.play(sfxHit, 1f, 1f, 1, 0, 1f);
+        }
+
+        attacker.hasAttacked = true;
+
+        if (victim.getCurrentHp() <= 0) {
+            mBattleGrid.setContent(index, "empty");
+        }
+
         selectedTile = -1;
         targets = new int[0];
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            attacker.spriteId = attacker.idleSpriteId;
+            updateSprites();
+        }, 700);
     }
   
   private void end(){
             friendly = false;
             Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
+            showTurnOverlay("Enemy Turn");
             currTurn++;
             for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
                 Button gridButton = (Button) mButtonGrid.getChildAt(i);
@@ -325,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
             }
             mContinueButton.setEnabled(false);
             phase = "enemy_turn";
+            updateBanner();
             CountDownTimer Timer = new CountDownTimer(4000, 1000){
                 int count = 0;
                 public void onFinish() {
@@ -340,6 +404,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     friendly = true;
                     phase = "movement";
+                    updateBanner();
+                    showTurnOverlay("Player Turn");
                 }
                 public void onTick(long millisUntilFinished) {
                     if (count == 1){
@@ -364,6 +430,100 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private void updateBanner() {
+        // Turn banner
+        if (friendly) {
+            TurnText.setText("Player Turn");
+        } else {
+            TurnText.setText("Enemy Turn");
+        }
+
+        // Phase banner
+        switch (phase) {
+            case "deploySquad":
+                PhaseText.setText("Deploy Squad");
+                break;
+            case "movement":
+                PhaseText.setText("Movement");
+                break;
+            case "attack":
+                PhaseText.setText("Attack");
+                break;
+            case "enemy_turn":
+                PhaseText.setText("Enemy Phase");
+                break;
+            default:
+                PhaseText.setText("");
+                break;
+        }
+    }
+
+    private void showTurnOverlay(String text) {
+        turnOverlayText.setText(text);
+        turnOverlay.setVisibility(View.VISIBLE);
+
+        float startX = -screenWidth;
+        float centerX = 0f;
+        float driftX  = 80f;
+        float endX    = screenWidth;
+
+        turnOverlay.setTranslationX(startX);
+
+        ObjectAnimator slideIn = ObjectAnimator.ofFloat(turnOverlay, "translationX",
+                startX, centerX);
+        slideIn.setDuration(500);
+
+        ObjectAnimator drift = ObjectAnimator.ofFloat(turnOverlay, "translationX",
+                centerX, driftX);
+        drift.setDuration(1200);
+
+        ObjectAnimator slideOut = ObjectAnimator.ofFloat(turnOverlay, "translationX",
+                driftX, endX);
+        slideOut.setDuration(350);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(slideIn, drift, slideOut);
+
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                turnOverlay.setVisibility(View.GONE);
+            }
+        });
+
+        set.start();
+    }
+
+    private void initMusic() {
+        battleIntro = MediaPlayer.create(this, R.raw.battle_theme_intro);
+        battleIntro.setVolume(0.4f, 0.4f);
+        battleIntro.setOnCompletionListener(mp -> {
+            mp.release();
+            battleIntro = null;
+
+            battleLoop = MediaPlayer.create(MainActivity.this, R.raw.battle_theme_loop);
+            battleLoop.setLooping(true);
+            battleLoop.setVolume(0.4f, 0.4f);
+            battleLoop.start();
+        });
+        battleIntro.start();
+    }
+
+    private void initSoundEffects() {
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(6)
+                .build();
+
+        sfxBlade  = soundPool.load(this, R.raw.blade, 1);
+        sfxBow    = soundPool.load(this, R.raw.bow, 1);
+        sfxFire   = soundPool.load(this, R.raw.fire, 1);
+        sfxMove   = soundPool.load(this, R.raw.move, 1);
+        sfxHit    = soundPool.load(this, R.raw.hit, 1);
+        sfxButton = soundPool.load(this, R.raw.button_press, 1);
+    }
+
+
 
     ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -391,9 +551,30 @@ public class MainActivity extends AppCompatActivity {
                            ImageView imageView3 = findViewById(R.id.character_three_card);
                            imageView3.setImageResource(PCs[2].spriteId);
                            updateSprites();
+
+                           initMusic();
                        }
                    }
                }
             }
     );
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (battleIntro != null) {
+            battleIntro.release();
+            battleIntro = null;
+        }
+        if (battleLoop != null) {
+            battleLoop.release();
+            battleLoop = null;
+        }
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
+    }
+
 }
