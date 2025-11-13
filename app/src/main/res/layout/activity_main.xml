@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/combat_background"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -70,6 +71,86 @@
             <ImageView style="@style/foe_grid" />
 
             <ImageView style="@style/foe_grid" />
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/highlight_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="8"
+            android:rowCount="3">
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
+            <ImageView
+                style="@style/grid_sprite"
+                android:src="@drawable/empty_grid" />
         </GridLayout>
 
         <GridLayout
@@ -152,85 +233,7 @@
                 android:src="@drawable/empty_grid" />
         </GridLayout>
 
-        <GridLayout
-            android:id="@+id/highlight_grid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="8"
-            android:rowCount="3">
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-            <ImageView
-                style="@style/grid_sprite"
-                android:src="@drawable/empty_grid" />
-        </GridLayout>
+
 
         <GridLayout
             android:id="@+id/button_grid"

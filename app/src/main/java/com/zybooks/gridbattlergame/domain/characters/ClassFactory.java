@@ -37,10 +37,10 @@ public final class ClassFactory extends AppCompatActivity {
     public static int idleSpriteFor(CharacterClass char_class) {
         switch (char_class) {
             case FIGHTER: return R.drawable.fighter_idle;
-            case MAGE:    return R.drawable.mage_temp_sprite;
+            case MAGE:    return R.drawable.mage_idle;
             case RANGER:  return R.drawable.ranger_temp_sprite;
             case ROGUE:   return R.drawable.rogue_idle;
-            case CLERIC:  return R.drawable.cleric_temp_sprite;
+            case CLERIC:  return R.drawable.cleric_idle;
             case GOBLIN:  return R.drawable.skeleton_idle;
             default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
         }
@@ -50,10 +50,10 @@ public final class ClassFactory extends AppCompatActivity {
     public static int attackSpriteFor(CharacterClass char_class) {
         switch (char_class) {
             case FIGHTER: return R.drawable.fighter_attack;
-            case MAGE:    return R.drawable.mage_temp_sprite;
+            case MAGE:    return R.drawable.mage_attack;
             case RANGER:  return R.drawable.ranger_temp_sprite;
             case ROGUE:   return R.drawable.rogue_attack;
-            case CLERIC:  return R.drawable.cleric_temp_sprite;
+            case CLERIC:  return R.drawable.cleric_attack;
             case GOBLIN:  return R.drawable.skeleton_attack;
             default: throw new IllegalArgumentException("Unknown Class Entered: " + char_class);
         }

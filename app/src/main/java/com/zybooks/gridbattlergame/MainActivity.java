@@ -186,12 +186,12 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < targets.length; i++) {
             ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(targets[i]);
-            gridSprite.setImageResource(R.drawable.board_movement_highlight);
+            gridSprite.setImageResource(R.drawable.board_enemy_highlight);
         }
 
         if (selectedTile != -1) {
             ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(selectedTile);
-            gridSprite.setImageResource(R.drawable.board_movement_highlight);
+            gridSprite.setImageResource(R.drawable.board_character_highlight);
         }
         ProgressBar bar1 = findViewById(R.id.character_one_bar);
         bar1.setProgress((((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100))/20)*20);
