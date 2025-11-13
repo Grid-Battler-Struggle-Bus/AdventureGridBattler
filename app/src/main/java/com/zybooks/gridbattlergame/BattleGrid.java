@@ -67,7 +67,7 @@ public class BattleGrid {
         //remove character from previous position if deployed before
         if(PCs[deploymentCount].deployed){
             battleGrid[PCs[deploymentCount].location/8][PCs[deploymentCount].location%8] = "empty";
-        //set that character has been deployed now
+            //set that character has been deployed now
         } else {
             PCs[deploymentCount].deployed = true;
         }

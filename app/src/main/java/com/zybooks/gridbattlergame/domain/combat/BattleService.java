@@ -12,7 +12,6 @@ public final class BattleService {
         int dmg = BattleCalculator.basicDamage(attacker, defender);
         Log.d("TAG", "dealBasicDamage: " + attacker.charName + " to " + defender.charName + ": " +dmg);
         defender.applyDamage(dmg);
-        //TODO: put combat sounds here
     }
     //Perform Backstab
     public static void dealBackstabDamage(CharacterUnit attacker, CharacterUnit defender) {

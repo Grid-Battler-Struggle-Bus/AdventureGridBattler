@@ -181,17 +181,17 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < openMoves.length; i++) {
             ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(openMoves[i]);
-            gridSprite.setImageResource(R.drawable.board_movement_highlight);
+            gridSprite.setImageResource(R.drawable.movement_select_icon);
         }
 
         for (int i = 0; i < targets.length; i++) {
             ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(targets[i]);
-            gridSprite.setImageResource(R.drawable.board_movement_highlight);
+            gridSprite.setImageResource(R.drawable.enemy_select_icon);
         }
 
         if (selectedTile != -1) {
             ImageView gridSprite = (ImageView) mHighlightGrid.getChildAt(selectedTile);
-            gridSprite.setImageResource(R.drawable.board_movement_highlight);
+            gridSprite.setImageResource(R.drawable.character_select_icon);
         }
         ProgressBar bar1 = findViewById(R.id.character_one_bar);
         bar1.setProgress((((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100))/20)*20);
@@ -407,22 +407,29 @@ public class MainActivity extends AppCompatActivity {
                     updateBanner();
                     showTurnOverlay("Player Turn");
                 }
-                public void onTick(long millisUntilFinished) {
-                    if (count == 1){
-                        AI0.executeTurn();
-                        count++;
-                    } else if(count == 2){
-                        AI1.executeTurn();
-                        count++;
-                    } else if (count == 3) {
-                        AI2.executeTurn();
-                        count++;
-                    } else {
-                        count++;
-                    }
-                    updateSprites();
+                for (int i = 0; i < PCs.length; i++) {
+                    PCs[i].currentMove = 0;
+                    PCs[i].hasAttacked = false;
                 }
-            }.start();
+                friendly = true;
+                phase = "movement";
+            }
+            public void onTick(long millisUntilFinished) {
+                if (count == 1){
+                    AI0.executeTurn();
+                    count++;
+                } else if(count == 2){
+                    AI1.executeTurn();
+                    count++;
+                } else if (count == 3) {
+                    AI2.executeTurn();
+                    count++;
+                } else {
+                    count++;
+                }
+                updateSprites();
+            }
+        }.start();
     }
     public boolean checkContent (int[] array, int index){
         for (int i = 0; i < array.length; i++){
