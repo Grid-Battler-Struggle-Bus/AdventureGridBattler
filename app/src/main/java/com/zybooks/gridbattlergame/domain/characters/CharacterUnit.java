@@ -54,4 +54,4 @@ public final class CharacterUnit {
     public CharacterClass getUnitClass() {
         return unitClass;
     }
-}}
+}
