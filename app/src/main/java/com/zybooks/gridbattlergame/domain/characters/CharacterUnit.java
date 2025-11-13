@@ -1,5 +1,6 @@
 package com.zybooks.gridbattlergame.domain.characters;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public final class CharacterUnit {
@@ -11,8 +12,10 @@ public final class CharacterUnit {
     private int currentHp;
     public int location;
     public boolean deployed;
-
     public static boolean friendly;
+    public int spriteId;
+    public int currentMove;
+    public boolean hasAttacked;
 
     public CharacterUnit(String charName, CharacterClass unitClass, boolean team) {
         this.charName = charName;
@@ -23,6 +26,10 @@ public final class CharacterUnit {
         this.location = -1;
         this.deployed = false;
         this.friendly = team;
+        this.spriteId = ClassFactory.spriteFor(unitClass);
+        this.currentMove = 0;
+        this.hasAttacked = false;
+        //TODO: add character sounds variables
     }
 
     //Apply Damage
@@ -47,4 +54,4 @@ public final class CharacterUnit {
     public CharacterClass getUnitClass() {
         return unitClass;
     }
-}
+}}
