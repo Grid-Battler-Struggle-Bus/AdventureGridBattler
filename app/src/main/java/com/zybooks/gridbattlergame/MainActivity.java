@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private int enemyTurns = 0;
     private int selectedTile = -1;
     int[] targets = new int[0];
+
+    int[] allys = new int[0];
     int[] openMoves = new int[0];
     private TextView PhaseText;
     private TextView TurnText;
@@ -160,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateSprites() {
+        int enemiesAlive = 3;
+        int charactersAlive = 3;
         for (int i = 0; i < mSpriteGrid.getChildCount(); i++) {
             ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(i);
             gridSprite.setImageResource(0);
@@ -170,12 +174,21 @@ public class MainActivity extends AppCompatActivity {
             if (PCs[i].location != -1) {
                 ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(PCs[i].location);
                 gridSprite.setImageResource(PCs[i].spriteId);
+
+            } else {
+                if (currTurn != 0 ){
+                    charactersAlive--;
+                }
             }
         }
         for (int i = 0; i < Enemies.length; i++){
             if (Enemies[i].location != -1) {
                 ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(Enemies[i].location);
                 gridSprite.setImageResource(Enemies[i].spriteId);
+            } else {
+                if (currTurn != 0 ){
+                    enemiesAlive--;
+                }
             }
         }
 
@@ -194,11 +207,18 @@ public class MainActivity extends AppCompatActivity {
             gridSprite.setImageResource(R.drawable.board_character_highlight);
         }
         ProgressBar bar1 = findViewById(R.id.character_one_bar);
-        bar1.setProgress((((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100))/20)*20);
+        bar1.setProgress((((int)(((float)PCs[0].getCurrentHp()/(float)PCs[0].unitStats.maxHp)*100))/5)*5);
         ProgressBar bar2 = findViewById(R.id.character_two_bar);
-        bar2.setProgress((((int)(((float)PCs[1].getCurrentHp()/(float)PCs[1].unitStats.maxHp)*100))/20)*20);
+        bar2.setProgress((((int)(((float)PCs[1].getCurrentHp()/(float)PCs[1].unitStats.maxHp)*100))/5)*5);
         ProgressBar bar3 = findViewById((R.id.character_three_bar));
-        bar3.setProgress((((int)(((float)PCs[2].getCurrentHp()/(float)PCs[2].unitStats.maxHp)*100))/20)*20);
+        bar3.setProgress((((int)(((float)PCs[2].getCurrentHp()/(float)PCs[2].unitStats.maxHp)*100))/5)*5);
+        if(enemiesAlive==0){
+            battleWin();
+            return;
+        }
+        if(charactersAlive==0){
+            battleLose();
+        }
     }
 
     public void manageMovement(int index){
@@ -229,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
         mBattleGrid.setContent(index, currentChar);
         PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
         PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].currentMove += 1;
-        //TODO: put character move sound
         if (soundPool != null) soundPool.play(sfxMove, 1f, 1f, 1, 0, 1f);
         mBattleGrid.setContent(selectedTile, "empty");
         selectedTile = - 1;
@@ -248,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (selectedTile == index) {
             Log.d("TAG", "manageAttack: End Attack");
             endAttack(index);
-        } else if (checkContent(targets, index)){
+        } else if (checkContent(targets, index) || checkContent(allys, index)){
             Log.d("TAG", "manageAttack: Attack");
             performAttack(index);
         }
@@ -275,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
             case RANGED:
-                tempArray = mBattleGrid.getSpecialLine(selectedTile, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, 'E', "enemy");
+                tempArray = mBattleGrid.getSpecialLine(selectedTile, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
                     if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
@@ -305,11 +324,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
-            case EXPLOSIVE:
-                tempArray = mBattleGrid.getSpecialRadius(selectedTile, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "enemy");
+            case HEAL:
+                tempArray = mBattleGrid.getSpecialRadius(selectedTile, mBattleGrid.getCharacter(index).equippedAbility.abRangeMax, "character");
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(tempArray));
                 tempList = new ArrayList<>();
                 for(int i = 0; i < tempArray.length; i++){
-                    if(mBattleGrid.getContent(tempArray[i]).contains("enemy")){
+                    if(mBattleGrid.getContent(tempArray[i]).contains("character")){
                         tempList.add(tempArray[i]);
                     }
                 }
@@ -318,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < targets.length; i++){
                     targets[i] = tempList.get(i);
                 }
+                Log.d("TAG", "Attack: Targets" + Arrays.toString(targets));
                 break;
         }
     }
@@ -379,7 +400,6 @@ public class MainActivity extends AppCompatActivity {
   
   private void end(){
             friendly = false;
-            Toast.makeText(this, R.string.enemyTurn, Toast.LENGTH_SHORT).show();
             showTurnOverlay("Enemy Turn");
             currTurn++;
             for (int i = 0; i < mButtonGrid.getChildCount(); i++) {
@@ -523,7 +543,33 @@ public class MainActivity extends AppCompatActivity {
         sfxButton = soundPool.load(this, R.raw.button_press, 1);
     }
 
+    public void battleWin() {
+        showTurnOverlay("Victory");
+        mContinueButton.setActivated(false);
+        //Intent intent = new Intent(MainActivity.this, MainMenu.class);
+        //startActivity(intent);
+        CountDownTimer Timer = new CountDownTimer(3000, 1000) {
+            public void onFinish() {
+                finish();
+            }
+            public void onTick(long millisUntilFinished) {
+            }
+        }.start();
+    }
 
+    public void battleLose(){
+        mContinueButton.setActivated(false);
+        showTurnOverlay("Defeat");
+        //Intent intent = new Intent(MainActivity.this, MainMenu.class);
+        //startActivity(intent);
+        CountDownTimer Timer = new CountDownTimer(3000, 1000) {
+            public void onFinish() {
+                finish();
+            }
+            public void onTick(long millisUntilFinished) {
+            }
+        }.start();
+    }
 
     ActivityResultLauncher<Intent> characterSelectLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -551,7 +597,7 @@ public class MainActivity extends AppCompatActivity {
                            ImageView imageView3 = findViewById(R.id.character_three_card);
                            imageView3.setImageResource(PCs[2].spriteId);
                            updateSprites();
-
+                            currTurn++;
                            initMusic();
                        }
                    }

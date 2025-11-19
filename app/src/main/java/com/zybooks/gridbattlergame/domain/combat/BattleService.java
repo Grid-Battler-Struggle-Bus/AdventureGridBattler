@@ -12,12 +12,17 @@ public final class BattleService {
         int dmg = BattleCalculator.basicDamage(attacker, defender);
         Log.d("TAG", "dealBasicDamage: " + attacker.charName + " to " + defender.charName + ": " +dmg);
         defender.applyDamage(dmg);
-        //TODO: put combat sounds here
+        if(defender.getCurrentHp() == 0){
+            defender.location = -1;
+        }
     }
     //Perform Backstab
     public static void dealBackstabDamage(CharacterUnit attacker, CharacterUnit defender) {
         int dmg = BattleCalculator.backstabDamage(attacker, defender);
         defender.applyDamage(dmg);
+        if(defender.getCurrentHp() == 0){
+            defender.location = -1;
+        }
     }
     //Perform Explosive Damage
     public static void dealExplosiveDamage(CharacterUnit attacker, CharacterUnit defender) {
@@ -27,13 +32,5 @@ public final class BattleService {
     //Perform Heal
     public static void healUnit(CharacterUnit target) {
         target.applyHeal(BattleCalculator.heal());
-    }
-    //AreTheyDead?
-    public static boolean DeathCheck(CharacterUnit potentialCorpse) {
-        if (potentialCorpse.getCurrentHp() == 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

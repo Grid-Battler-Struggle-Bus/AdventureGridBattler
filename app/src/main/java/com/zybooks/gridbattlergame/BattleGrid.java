@@ -165,42 +165,32 @@ public class BattleGrid {
     }
 
     //Return integer array of all tiles in a line facing a cardinal direction
-    public int[] getLine(int index, int range, char direction){
+    public int[] getLine(int index, int range){
         List<Integer> lineTilesList = new ArrayList<>();
-        switch(direction) {
-            case('N'):
                 for(int i = 1; i <= range; i++){
                     int row = index / GRID_WIDTH;
                     if(row - i >= 0){
                         lineTilesList.add(index - (i * GRID_WIDTH));
                     }
                 }
-                break;
-            case('E'):
                 for(int i = 1; i <= range; i++){
                     int col = index % GRID_WIDTH;
                     if(col + i < GRID_WIDTH){
                         lineTilesList.add(index + i);
                     }
                 }
-                break;
-            case('S'):
                 for(int i = 1; i <= range; i++){
                     int row = index / GRID_WIDTH;
                     if(row + i < GRID_HEIGHT){
                         lineTilesList.add(index + (i * GRID_WIDTH));
                     }
                 }
-                break;
-            case('W'):
                 for(int i = 1; i <= range; i++){
                     int col = index % GRID_WIDTH;
                     if(col + i >= 0){
                         lineTilesList.add(index - i);
                     }
                 }
-                break;
-        }
         int[] lineTiles = new int[lineTilesList.size()];
         for(int i = 0; i < lineTiles.length; i++){
             lineTiles[i] = lineTilesList.get(i);
@@ -210,8 +200,8 @@ public class BattleGrid {
 
 
     //Return integer array of all tiles in a line facing a cardinal direction with a specified keyword
-    public int[] getSpecialLine(int index, int range, char direction, String keyword){
-        int[] lineTilesTemp = getLine(index, range, direction);
+    public int[] getSpecialLine(int index, int range, String keyword){
+        int[] lineTilesTemp = getLine(index, range);
         List<Integer> lineTilesList = new ArrayList<>();
         for(int i = 0; i < lineTilesTemp.length; i++){
             if(getContent(lineTilesTemp[i]).contains(keyword)){
