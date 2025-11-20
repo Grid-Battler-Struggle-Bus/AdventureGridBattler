@@ -192,7 +192,7 @@ public class BattleGrid {
                 }
                 for(int i = 1; i <= range; i++){
                     int col = index % GRID_WIDTH;
-                    if(col + i >= 0){
+                    if(col - i >= 0){
                         lineTilesList.add(index - i);
                     }
                 }
