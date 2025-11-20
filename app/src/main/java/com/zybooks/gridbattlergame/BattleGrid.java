@@ -8,6 +8,7 @@ import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BattleGrid {
     public static final int GRID_HEIGHT = 3;
@@ -17,6 +18,7 @@ public class BattleGrid {
     public int currentTarget = -1;
     public CharacterUnit[] PCs;
     public CharacterUnit[] Enemies;
+    public Random random = new Random();
 
     public BattleGrid(CharacterUnit[] incomingFriends, CharacterUnit[] incomingFoes) {
         battleGrid = new String[GRID_HEIGHT][GRID_WIDTH];
@@ -27,6 +29,7 @@ public class BattleGrid {
                 battleGrid[row][col] = "empty";
             }
         }
+
     }
     public String getContent(int index) {
         int row = index / GRID_WIDTH;
@@ -49,15 +52,18 @@ public class BattleGrid {
         battleGrid[row][col] = content;
     }
     public void deployEnemies(){
-        Enemies[0].location = 4;
+        Enemies[0].location = 4 + (random.nextInt(3) * 8);
         Enemies[0].deployed = true;
-        setContent (4, "enemy0");
-        Enemies[1].location = 13;
+        setContent (Enemies[0].location, "enemy0");
+        Enemies[1].location = 5 + (random.nextInt(3) * 8);
         Enemies[1].deployed = true;
-        setContent (13, "enemy1");
-        Enemies[2].location = 21;
+        setContent (Enemies[1].location, "enemy1");
+        Enemies[2].location = 6 + (random.nextInt(3) * 8);
         Enemies[2].deployed = true;
-        setContent (21, "enemy2");
+        setContent (Enemies[2].location, "enemy2");
+        Enemies[3].location = 7 + (random.nextInt(3) * 8);
+        Enemies[3].deployed = true;
+        setContent (Enemies[3].location, "enemy3");
     }
     public void deployCharacter(int index){
         int row = index / GRID_WIDTH;
@@ -72,7 +78,6 @@ public class BattleGrid {
             PCs[deploymentCount].deployed = true;
         }
         battleGrid[row][col] = "character" + deploymentCount;
-        //TODO: put deploy sound here
         PCs[deploymentCount].location = (row * 8) + col;
     }
 

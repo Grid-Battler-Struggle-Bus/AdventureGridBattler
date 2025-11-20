@@ -25,6 +25,20 @@
             android:exported="false"
             android:screenOrientation="landscape">
         </activity>
+        <activity
+            android:name=".MainMenu"
+            android:exported="false"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".Battle"
+            android:exported="false"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".Tutorial"
+            android:exported="false"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
-
 </manifest>

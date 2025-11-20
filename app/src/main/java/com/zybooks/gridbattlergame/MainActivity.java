@@ -23,7 +23,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -44,10 +43,15 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mSpriteGrid;
     private GridLayout mHighlightGrid;
     private CharacterUnit[] PCs = new CharacterUnit[3];
-    private CharacterUnit[] Enemies = new CharacterUnit[]{new CharacterUnit("Goblin0", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false), new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false)};
+    private CharacterUnit[] Enemies = new CharacterUnit[]{
+            new CharacterUnit("Goblin0", CharacterClass.GOBLIN, false),
+            new CharacterUnit("Goblin1", CharacterClass.GOBLIN, false),
+            new CharacterUnit("Goblin2", CharacterClass.GOBLIN, false),
+            new CharacterUnit("Goblin3", CharacterClass.GOBLIN, false)};
     private EnemyAI AI0;
     private EnemyAI AI1;
     private EnemyAI AI2;
+    private EnemyAI AI3;
     private String phase;
     private int currTurn = 0;
     private int enemyTurns = 0;
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer battleIntro;
     private MediaPlayer battleLoop;
     private SoundPool soundPool;
+    public static TextView battleLog;
     private int sfxBlade, sfxBow, sfxFire, sfxMove, sfxHit, sfxButton;
 
 
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         screenWidth = getResources().getDisplayMetrics().widthPixels;
         PhaseText = findViewById(R.id.bannerText1);
         TurnText  = findViewById(R.id.bannerText2);
-
+        battleLog = findViewById(R.id.combatLog);
         mButtonGrid = findViewById(R.id.button_grid);
         mSpriteGrid = findViewById(R.id.sprite_grid);
         mHighlightGrid = findViewById(R.id.highlight_grid);
@@ -99,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         AI0 = new EnemyAI(mBattleGrid, Enemies[0], this::updateSprites, soundPool, sfxMove, sfxBow, sfxHit);
         AI1 = new EnemyAI(mBattleGrid, Enemies[1], this::updateSprites, soundPool, sfxMove, sfxBow, sfxHit);
         AI2 = new EnemyAI(mBattleGrid, Enemies[2], this::updateSprites, soundPool, sfxMove, sfxBow, sfxHit);
+        AI3 = new EnemyAI(mBattleGrid, Enemies[3], this::updateSprites, soundPool, sfxMove, sfxBow, sfxHit);
         phase = "deploySquad";
         friendly = true;
         updateBanner();
@@ -115,13 +121,17 @@ public class MainActivity extends AppCompatActivity {
         switch (phase) {
             case "deploySquad":
                 if (mBattleGrid.deploymentCount <= 1) {
-                    if (mBattleGrid.PCs[mBattleGrid.deploymentCount].deployed) {
+                    if (PCs[mBattleGrid.deploymentCount].deployed) {
                         mBattleGrid.deploymentCount++;
+                        battleLog.append("\n" + PCs[mBattleGrid.deploymentCount-1].charName + "  deployed at ("
+                                + ((PCs[mBattleGrid.deploymentCount-1].location%8) + 1) + "," + ((PCs[mBattleGrid.deploymentCount-1].location/8) + 1) + ")");
                     }
                 } else {
                     phase = "movement";
                     Log.d("TAG", "ContinueButton: Go to Move");
                     updateBanner();
+                    battleLog.append("\n" + PCs[mBattleGrid.deploymentCount].charName + "  deployed at ("
+                            + ((PCs[mBattleGrid.deploymentCount].location%8) + 1) + "," + ((PCs[mBattleGrid.deploymentCount].location/8) + 1) + ")");
                 }
                 break;
             case "movement":
@@ -162,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateSprites() {
-        int enemiesAlive = 3;
+        int enemiesAlive = 4;
         int charactersAlive = 3;
         for (int i = 0; i < mSpriteGrid.getChildCount(); i++) {
             ImageView gridSprite = (ImageView) mSpriteGrid.getChildAt(i);
@@ -247,12 +257,15 @@ public class MainActivity extends AppCompatActivity {
     public void performMove(int index){
         String currentChar = mBattleGrid.getContent(selectedTile);
         mBattleGrid.setContent(index, currentChar);
-        PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
-        PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].currentMove += 1;
+        int characterNum = Integer.parseInt(currentChar.replaceAll("[^0-9]", ""));
+        PCs[characterNum].location = index;
+        PCs[characterNum].currentMove += 1;
         if (soundPool != null) soundPool.play(sfxMove, 1f, 1f, 1, 0, 1f);
         mBattleGrid.setContent(selectedTile, "empty");
         selectedTile = - 1;
         openMoves = new int[0];
+        battleLog.append("\n" + PCs[characterNum].charName + "  moved to ("
+                + ((PCs[characterNum].location%8) + 1) + "," + ((PCs[characterNum].location/8) + 1) + ")");
     }
 
     //Undo start movement
@@ -409,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
             mContinueButton.setEnabled(false);
             phase = "enemy_turn";
             updateBanner();
-            CountDownTimer Timer = new CountDownTimer(4000, 1000){
+            CountDownTimer Timer = new CountDownTimer(5000, 1000){
                 int count = 0;
                 public void onFinish() {
                     count = 0;
@@ -436,6 +449,9 @@ public class MainActivity extends AppCompatActivity {
                         count++;
                     } else if (count == 3) {
                         AI2.executeTurn();
+                        count++;
+                    } else if (count == 4) {
+                        AI3.executeTurn();
                         count++;
                     } else {
                         count++;
@@ -546,10 +562,10 @@ public class MainActivity extends AppCompatActivity {
     public void battleWin() {
         showTurnOverlay("Victory");
         mContinueButton.setActivated(false);
-        //Intent intent = new Intent(MainActivity.this, MainMenu.class);
-        //startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, MainMenu.class);
         CountDownTimer Timer = new CountDownTimer(3000, 1000) {
             public void onFinish() {
+                startActivity(intent);
                 finish();
             }
             public void onTick(long millisUntilFinished) {
@@ -560,10 +576,10 @@ public class MainActivity extends AppCompatActivity {
     public void battleLose(){
         mContinueButton.setActivated(false);
         showTurnOverlay("Defeat");
-        //Intent intent = new Intent(MainActivity.this, MainMenu.class);
-        //startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, MainMenu.class);
         CountDownTimer Timer = new CountDownTimer(3000, 1000) {
             public void onFinish() {
+                startActivity(intent);
                 finish();
             }
             public void onTick(long millisUntilFinished) {
@@ -579,10 +595,8 @@ public class MainActivity extends AppCompatActivity {
                    if (result.getResultCode() == Activity.RESULT_OK) {
                        Intent data = result.getData();
                        if (data != null) {
-                           Log.d("TAG", "onActivityResult: results extracted");
                            String char0Name = data.getStringExtra("char0Name");
                            String char0Class = data.getStringExtra("char0Class");
-                           Log.d("TAG", "onActivityResult: char1 strings extracted" + char0Class + char0Name);
                            PCs[0] = new CharacterUnit(char0Name, CharacterClass.valueOf(char0Class), true);
                            ImageView imageView1 = findViewById(R.id.character_one_card);
                            imageView1.setImageResource(PCs[0].spriteId);
