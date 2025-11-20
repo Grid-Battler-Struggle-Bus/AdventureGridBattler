@@ -19,6 +19,11 @@ public class MainMenu extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        tutorialButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainMenu.this, Tutorial.class);
+            startActivity(intent);
+        });
     }
 
 }
