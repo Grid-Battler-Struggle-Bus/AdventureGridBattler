@@ -7,27 +7,93 @@
 
     <style name="Theme.GridBattlerGame" parent="Base.Theme.GridBattlerGame" />
     <style name="grid_button">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+    <style name="top_row">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_marginStart">9dp</item>
+        <item name="android:layout_marginEnd">9dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+    <style name="middle_row">
+        <item name="android:layout_height">55dp</item>
+        <item name="android:layout_width">55dp</item>
+        <item name="android:layout_marginStart">6.5dp</item>
+        <item name="android:layout_marginEnd">6.5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+    <style name="bottom_row">
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
     <style name="grid_sprite">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:gravity">center</item>
     </style>
     <style name="friend_grid">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:src">@drawable/board_background_friend</item>
     </style>
     <style name="foe_grid">
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:src">@drawable/board_background_foe</item>
+    </style>
+    <style name="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <style name="char_select_fighter" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/crimson</item>
+    </style>
+    <style name="char_select_mage" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/purple</item>
+    </style>
+    <style name="char_select_ranger" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/green</item>
+    </style>
+    <style name="char_select_rogue" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+    <style name="char_select_cleric" parent="char_select">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/yellow</item>
+    </style>
+    <style name="parchment_paper">
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/parchment</item>
     </style>
 </resources>

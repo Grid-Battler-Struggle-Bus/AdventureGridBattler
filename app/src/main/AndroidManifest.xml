@@ -6,25 +6,39 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/grid_battler_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/grid_battler_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.GridBattlerGame">
         <activity
             android:name=".MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="landscape">
-           <intent-filter>
-               <action android:name="android.intent.action.MAIN" />
-               <category android:name="android.intent.category.LAUNCHER" />
-           </intent-filter>
         </activity>
         <activity
             android:name=".domain.ui.SelectionScreen"
             android:exported="false"
             android:screenOrientation="landscape">
         </activity>
+        <activity
+            android:name=".MainMenu"
+            android:exported="true"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Battle"
+            android:exported="false"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".Tutorial"
+            android:exported="false"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
-
 </manifest>

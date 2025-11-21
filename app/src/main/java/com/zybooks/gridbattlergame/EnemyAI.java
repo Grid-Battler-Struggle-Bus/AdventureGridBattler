@@ -1,24 +1,43 @@
 package com.zybooks.gridbattlergame;
 
+import android.media.SoundPool;
 import android.util.Log;
 
 import com.zybooks.gridbattlergame.BattleGrid;
 import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
 import com.zybooks.gridbattlergame.domain.combat.BattleService;
+import android.os.Handler;
+import android.os.Looper;
 
 public class EnemyAI {
+    public interface SpriteUpdateCallback {
+        void refreshSprites();
+    }
+
     private CharacterUnit character;
     private BattleGrid battleGrid;
     private int enemyIndex; // The grid index where this enemy is located
     private String enemyId; // e.g., "enemy0"
     private int movementRange = 1; // How many tiles the enemy can move
     private int attackRange = 1; // Attack range (1 = adjacent only)
+    private SpriteUpdateCallback spriteCallback;
+    private SoundPool soundPool;
+    private int sfxMove;
+    private int sfxBow;
+    private int sfxHit;
 
-    public EnemyAI(BattleGrid battleGrid, CharacterUnit character) {
+    public EnemyAI(BattleGrid battleGrid, CharacterUnit character,
+                   SpriteUpdateCallback spriteCallback, SoundPool soundPool,
+                   int sfxMove, int sfxBow, int sfxHit) {
         this.character = character;
         this.battleGrid = battleGrid;
         this.enemyId = character.charName;
         this.enemyIndex = character.location;
+        this.spriteCallback = spriteCallback;
+        this.soundPool = soundPool;
+        this.sfxMove = sfxMove;
+        this.sfxBow  = sfxBow;
+        this.sfxHit  = sfxHit;
     }
 
     // Find where this enemy currently is on the grid
@@ -44,6 +63,7 @@ public class EnemyAI {
 
         // First, move towards the target
         moveTowards(nearestTargetIndex);
+        //TODO: play movement sound
 
         // Update position after moving
         enemyIndex = findEnemyIndex();
@@ -53,6 +73,7 @@ public class EnemyAI {
 
         if (distance <= attackRange) {
             attack(nearestTargetIndex);
+            //TODO: play attack sound
         }
     }
 
@@ -142,24 +163,35 @@ public class EnemyAI {
         battleGrid.setContent(newIndex, "enemy" + Integer.parseInt(character.charName.replaceAll("[^0-9]", "")));
         battleGrid.setContent(enemyIndex, "empty");
         character.location = newIndex;
+        if (soundPool != null) soundPool.play(sfxMove, 1f, 1f, 1, 0, 1f);
     }
 
     private void attack(int targetIndex) {
-       // Get which character is being attacked
-      CharacterUnit victim = battleGrid.getCharacter(targetIndex);
+        CharacterUnit victim = battleGrid.getCharacter(targetIndex);
 
-       // Extract character number (e.g., "character0" -> 0)
-       //int characterNum = Integer.parseInt(targetContent.replace("character", ""));
+        character.spriteId = character.attackSpriteId;
+        if (spriteCallback != null) spriteCallback.refreshSprites();
 
-        // Deal damage to the character
-        BattleService.dealBasicDamage(character,victim);
+        if (soundPool != null) {
+            soundPool.play(sfxBow, 1f, 1f, 1, 0, 1f); // arrow launch
+        }
+
+        BattleService.dealBasicDamage(character, victim);
+
+        if (soundPool != null) {
+            soundPool.play(sfxHit, 1f, 1f, 1, 0, 1f);
+        }
 
         Log.d("EnemyAI", character.charName + " attacked " + victim.charName);
 
-        // Check if character died
         if (victim.getCurrentHp() <= 0) {
             battleGrid.setContent(targetIndex, "empty");
             Log.d("EnemyAI", victim.charName + " was defeated!");
         }
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            character.spriteId = character.idleSpriteId;
+            if (spriteCallback != null) spriteCallback.refreshSprites();
+        }, 700);
     }
 }

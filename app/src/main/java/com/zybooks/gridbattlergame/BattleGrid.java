@@ -8,6 +8,7 @@ import com.zybooks.gridbattlergame.domain.characters.CharacterUnit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BattleGrid {
     public static final int GRID_HEIGHT = 3;
@@ -17,6 +18,7 @@ public class BattleGrid {
     public int currentTarget = -1;
     public CharacterUnit[] PCs;
     public CharacterUnit[] Enemies;
+    public Random random = new Random();
 
     public BattleGrid(CharacterUnit[] incomingFriends, CharacterUnit[] incomingFoes) {
         battleGrid = new String[GRID_HEIGHT][GRID_WIDTH];
@@ -27,6 +29,7 @@ public class BattleGrid {
                 battleGrid[row][col] = "empty";
             }
         }
+
     }
     public String getContent(int index) {
         int row = index / GRID_WIDTH;
@@ -49,15 +52,18 @@ public class BattleGrid {
         battleGrid[row][col] = content;
     }
     public void deployEnemies(){
-        Enemies[0].location = 4;
+        Enemies[0].location = 4 + (random.nextInt(3) * 8);
         Enemies[0].deployed = true;
-        setContent (4, "enemy0");
-        Enemies[1].location = 13;
+        setContent (Enemies[0].location, "enemy0");
+        Enemies[1].location = 5 + (random.nextInt(3) * 8);
         Enemies[1].deployed = true;
-        setContent (13, "enemy1");
-        Enemies[2].location = 21;
+        setContent (Enemies[1].location, "enemy1");
+        Enemies[2].location = 6 + (random.nextInt(3) * 8);
         Enemies[2].deployed = true;
-        setContent (21, "enemy2");
+        setContent (Enemies[2].location, "enemy2");
+        Enemies[3].location = 7 + (random.nextInt(3) * 8);
+        Enemies[3].deployed = true;
+        setContent (Enemies[3].location, "enemy3");
     }
     public void deployCharacter(int index){
         int row = index / GRID_WIDTH;
@@ -164,42 +170,32 @@ public class BattleGrid {
     }
 
     //Return integer array of all tiles in a line facing a cardinal direction
-    public int[] getLine(int index, int range, char direction){
+    public int[] getLine(int index, int range){
         List<Integer> lineTilesList = new ArrayList<>();
-        switch(direction) {
-            case('N'):
                 for(int i = 1; i <= range; i++){
                     int row = index / GRID_WIDTH;
                     if(row - i >= 0){
                         lineTilesList.add(index - (i * GRID_WIDTH));
                     }
                 }
-                break;
-            case('E'):
                 for(int i = 1; i <= range; i++){
                     int col = index % GRID_WIDTH;
                     if(col + i < GRID_WIDTH){
                         lineTilesList.add(index + i);
                     }
                 }
-                break;
-            case('S'):
                 for(int i = 1; i <= range; i++){
                     int row = index / GRID_WIDTH;
                     if(row + i < GRID_HEIGHT){
                         lineTilesList.add(index + (i * GRID_WIDTH));
                     }
                 }
-                break;
-            case('W'):
                 for(int i = 1; i <= range; i++){
                     int col = index % GRID_WIDTH;
-                    if(col + i >= 0){
+                    if(col - i >= 0){
                         lineTilesList.add(index - i);
                     }
                 }
-                break;
-        }
         int[] lineTiles = new int[lineTilesList.size()];
         for(int i = 0; i < lineTiles.length; i++){
             lineTiles[i] = lineTilesList.get(i);
@@ -209,8 +205,8 @@ public class BattleGrid {
 
 
     //Return integer array of all tiles in a line facing a cardinal direction with a specified keyword
-    public int[] getSpecialLine(int index, int range, char direction, String keyword){
-        int[] lineTilesTemp = getLine(index, range, direction);
+    public int[] getSpecialLine(int index, int range, String keyword){
+        int[] lineTilesTemp = getLine(index, range);
         List<Integer> lineTilesList = new ArrayList<>();
         for(int i = 0; i < lineTilesTemp.length; i++){
             if(getContent(lineTilesTemp[i]).contains(keyword)){
@@ -223,57 +219,4 @@ public class BattleGrid {
         }
         return lineTiles;
     }
-
-    public void manageMovement(int index){
-        //did player click a character and is a move already started
-        if (currentTarget == -1 && getContent(index).contains("character")){
-            startMovement(index);
-        //let player click on character again to cancel move
-        } else if (currentTarget == index){
-            endMovement(index);
-        //Move character to a different square and reset board for next move
-        } else if (getContent(index).contains("open")){
-            performMove(index);
-        }
-    }
-
-    //Sets tiles around target as available to move
-    public void startMovement(int index){
-        currentTarget = index;
-        int[] adjacent = getSpecialAdjacent(index, "empty");
-        for (int i = 0; i < adjacent.length; i++){
-            if(adjacent[i] != -1) {
-                setContent(adjacent[i], "open");
-            }
-        }
-    }
-
-    //Move character to an available adjacent tile
-    public void performMove(int index){
-        String currentChar = getContent(currentTarget);
-        setContent(index, currentChar);
-        PCs[Integer.parseInt(currentChar.replaceAll("[^0-9]", ""))].location = index;
-        int[] adjacent = getSpecialAdjacent(currentTarget, "open");
-        for (int i = 0; i < adjacent.length; i++){
-            if(adjacent[i] != -1) {
-                setContent(adjacent[i], "empty");
-            }
-        }
-        setContent(currentTarget, "empty");
-        currentTarget = - 1;
-    }
-
-    //Undo start movement
-    public void endMovement(int index){
-        int[] adjacent = getSpecialAdjacent(index, "open");
-        for (int i = 0; i < adjacent.length; i++){
-            if(adjacent[i] != -1) {
-                setContent(adjacent[i], "empty");
-            }
-        }
-        currentTarget = -1;
-    }
-
-
-
 }

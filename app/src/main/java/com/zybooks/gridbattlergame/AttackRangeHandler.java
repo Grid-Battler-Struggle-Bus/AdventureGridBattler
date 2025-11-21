@@ -61,7 +61,7 @@ public class AttackRangeHandler {
         Log.d(TAG, "Getting line targets in direction " + direction
                 + " with range " + range);
 
-        int[] tilesInLine = battleGrid.getSpecialLine(attackerLocation, range, direction, targetKeyword);
+        int[] tilesInLine = battleGrid.getSpecialLine(attackerLocation, range, targetKeyword);
 
         Log.d(TAG, "Targets in line: " + tilesInLine.length);
         return tilesInLine;
