@@ -7,17 +7,27 @@
     android:background="@drawable/character_stat_background_banner"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="175dp"
+        android:layout_height="50dp"
+        android:src="@drawable/dragonheader_a"
+        app:layout_constraintBottom_toTopOf="@id/battle_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Game"
+        android:text="GridLock"
         android:textSize="24sp"
+        android:layout_marginBottom="5dp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/battle_button"/>
+        app:layout_constraintBottom_toTopOf="@id/battle_button"
+       />
 
     <Button
         android:id="@+id/tutorial_button"

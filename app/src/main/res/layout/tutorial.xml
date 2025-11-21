@@ -8,4 +8,24 @@
     android:background="@drawable/character_stat_background_banner"
     tools:context=".MainActivity">
 
+    <TextView
+        style="@style/parchment_paper"
+        android:layout_width="549dp"
+        android:layout_height="228dp"
+        android:text="Starting the game takes you to the character select screen.
+        \n
+        \n Select three of the characters and contineu to the battle. Each has unique stats, so pick
+        carfully.
+        \n
+        \n Deploy units by picking a tile on your half of the board and lock them in with the continue
+        button.
+        \n
+        \n selects characters to move or attack with them. Use the continue button to move through
+        battle phases: Deployment, Movement, Attack.
+        \n
+        \n Defeat all enemies before they defeat you to win."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
