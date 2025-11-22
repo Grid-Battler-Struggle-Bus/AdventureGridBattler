@@ -38,5 +38,6 @@ public final class BattleService {
     //Perform Heal
     public static void healUnit(CharacterUnit target) {
         target.applyHeal(BattleCalculator.heal());
+        MainActivity.battleLog.append("\nCLERIC heals " + target.charName + " for " + BattleCalculator.heal() + " health");
     }
 }
