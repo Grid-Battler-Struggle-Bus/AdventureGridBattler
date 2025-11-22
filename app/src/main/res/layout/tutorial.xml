@@ -14,14 +14,11 @@
         android:layout_height="228dp"
         android:text="Starting the game takes you to the character select screen.
         \n
-        \n Select three of the characters and contineu to the battle. Each has unique stats, so pick
-        carfully.
+        \n Select three of the characters and continue to the battle. Each has unique stats, so pick carefully.
         \n
-        \n Deploy units by picking a tile on your half of the board and lock them in with the continue
-        button.
+        \n Deploy units by picking a tile on your half of the board and lock them in with the continue button.
         \n
-        \n selects characters to move or attack with them. Use the continue button to move through
-        battle phases: Deployment, Movement, Attack.
+        \n Select characters to move or attack with them. Use the continue button to move through battle phases: Deployment, Movement, Attack.
         \n
         \n Defeat all enemies before they defeat you to win."
         app:layout_constraintBottom_toBottomOf="parent"
